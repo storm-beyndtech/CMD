@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  width: 100%;
+  scroll-behavior: smooth;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  overflow-x: hidden;
+}
+
+section {
+  width: 100%;
+}
+
+button {
+  letter-spacing: 0.8px;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+  font-size: 1rem;
+}
+
+/* For Chrome, Safari, Edge */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* For Firefox */
+input[type="date"]::-moz-focus-inner {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* For Internet Explorer (IE) */
+input[type="date"]::-ms-expand {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+  cursor: pointer;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@layer components {
+  .max-ctn {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px 0 20px;
+  }
+}
+
+@layer utilities {
+  .title {
+    @apply text-[#2B2F38] text-[42px] max-sm:text-[28px] font-semibold leading-[50.4px] max-sm:leading-[33.6px];
+  }
+
+  .desc {
+    @apply text-[#5D6679] text-[17px] max-sm:text-sm leading-[27.2px] max-sm:leading-[22.4px];
+  }
+
+  .input {
+    @apply bg-transparent block w-full px-[14.5px] py-[12.5px] border border-[#E0E0E0] rounded-xl focus:outline-none focus:ring-indigo-500 focus:border-indigo-500;
+  }
+
+  .input::placeholder {
+    @apply text-[#B9BDC7] text-base !font-normal;
+  }
+
+  .label {
+    @apply font-medium text-[#48505E] flex flex-col gap-2;
+  }
+
+  .authTab {
+    @apply w-1/2 h-full text-[18px] font-semibold border-b-2 grid place-content-center text-[#858D9D];
+  }
+
+  .subscribeList {
+    @apply font-medium border-t border-[#F2F2F2] py-6;
+  }
+  .formAdd {
+    @apply w-fit text-secondary3 font-medium p-2.5 flex items-center gap-3 bg-secondary3/10 rounded-[14px];
+  }
+
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .even-flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .even-flex:nth-child(odd) {
+    flex-direction: row-reverse;
+  }
+}
+
+/* third-party libraries CSS */
+@media screen and (max-width: 1024px) {
+  #headlessui-portal-root .relative {
+    margin: 20px 0 !important;
+  }
+
+  #headlessui-portal-root .relative span {
+    font-size: 1.2rem !important;
+  }
+}
