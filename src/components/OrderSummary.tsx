@@ -1,17 +1,13 @@
+import { Prescription } from '../types/types';
 import { CheckoutItem } from './CheckoutItem'; // Update with correct path
 
 interface OrderSummaryProps {
-  items: {
-    image: string;
-    name: string;
-    dosage: string;
-    price: number;
-  }[];
+  items: Prescription[];
   fees: number;
 }
 
 export function OrderSummary({ items, fees }: OrderSummaryProps) {
-  const total = items.reduce((acc, item) => acc + item.price, fees);
+  const total = items.reduce((acc, item) => acc + item.drug.price, fees);
 
   return (
     <div className="flex-shrink-0 w-full h-fit lg:max-w-[386px] bg-white rounded-[14px] py-9 px-6 shadow-lg shadow-[#eaeaeaa6]">
@@ -21,10 +17,10 @@ export function OrderSummary({ items, fees }: OrderSummaryProps) {
       {items.map((item, index) => (
         <CheckoutItem
           key={index}
-          image={item.image}
-          name={item.name}
+          image={item.drug.imageUrl}
+          name={item.drug.name}
           dosage={item.dosage}
-          price={item.price}
+          price={item.drug.price}
         />
       ))}
 
