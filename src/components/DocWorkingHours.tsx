@@ -140,7 +140,7 @@ const DocWorkingHours: React.FC<WorkingHoursProps> = ({
       {/* Modal */}
       {isModalOpen && (
         <div className="h-screen fixed top-0 left-0 inset-0 z-[50000] bg-black bg-opacity-50 py-20 overflow-y-scroll">
-          <div className="h-fit min-h-[850px] w-full">
+          <div className="h-fit min-h-[850px] w-full p-3">
             <div className="bg-white rounded-lg p-6 max-w-lg w-full relative mx-auto">
               <GrClose
                 className="absolute top-7 right-5 text-gray-500 text-2xl cursor-pointer"
