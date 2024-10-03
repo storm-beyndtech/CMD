@@ -27,7 +27,7 @@ export default function Payment() {
     setLoading(true);
     setError(null);
 
-    navigate("/auth/patient/payment/payment-message?success=true")
+    navigate("/payment-message?type=package")
   };
 
   return (

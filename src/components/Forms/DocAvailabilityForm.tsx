@@ -9,6 +9,7 @@ export default function DocAvailabilityForm({
   setFormValues,
 }: any) {
   const { availability } = formValues;
+  
 
   // Handle checkbox toggle for days
   const toggleDay = (day: string) => {
