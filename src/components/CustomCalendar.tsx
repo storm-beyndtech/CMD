@@ -99,8 +99,12 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl relative">
-      <h3 className="text-lg font-semibold mb-4">Select Date(s)</h3>
+    <div
+      className={`bg-white ${isSelectDate ? "" : "p-6"} rounded-xl relative`}
+    >
+      {!isSelectDate && (
+        <h3 className="text-lg font-semibold mb-4">Select Date(s)</h3>
+      )}
       <div className="w-full max-w-[540px] mx-auto p-8 rounded-2xl border border-[#E4E5E7] mb-5">
         {/* Calendar Header: Month and Year with Navigation */}
         <div className="flex justify-between items-center pb-4 border-b border-[#E4E5E7]">
@@ -176,10 +180,12 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
         </div>
 
         {/* Close Button */}
-        <IoMdClose
-          onClick={() => setCloseDate(false)}
-          className="absolute top-7 right-4 text-xl text-gray-500 hover:text-gray-900 cursor-pointer"
-        />
+        {!isSelectDate && (
+          <IoMdClose
+            onClick={() => setCloseDate(false)}
+            className="absolute top-7 right-4 text-xl text-gray-500 hover:text-gray-900 cursor-pointer"
+          />
+        )}
       </div>
 
       {/* Filter Button (hidden when isSelectDate is true) */}
