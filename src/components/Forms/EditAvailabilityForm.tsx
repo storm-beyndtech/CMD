@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Alert from "../UI/Alert";
 import Btn from "../UI/Btn";
+import ScheduleForm from "./ScheduleForm";
+import { BiMessageSquareEdit } from "react-icons/bi";
 
 interface Availability {
   days: string[];
@@ -23,131 +25,82 @@ const EditAvailabilityForm: React.FC<EditAvailabilityFormProps> = ({
   error,
 }) => {
   const [formValues, setFormValues] = useState<Availability[]>(availability); // Initialize state as an array
+  const [editingIndex, setEditingIndex] = useState<number | null>(null); // Track which availability is being edited
+  const [showNewScheduleForm, setShowNewScheduleForm] = useState(false); // Control form display for adding new schedules
 
   useEffect(() => {
-    // Update form values whenever availability prop changes
     setFormValues(availability);
   }, [availability]);
 
-  // Handle checkbox toggle for days
-  const toggleDay = (index: number, day: string) => {
-    const newAvailability = [...formValues];
-    const currentDays = newAvailability[index].days;
-
-    newAvailability[index].days = currentDays.includes(day)
-      ? currentDays.filter((d) => d !== day)
-      : [...currentDays, day];
-
-    setFormValues(newAvailability);
+  // Handle form submission for editing/adding schedule
+  const handleSubmit = (updatedAvailability: Availability) => {
+    if (editingIndex !== null) {
+      const newAvailability = [...formValues];
+      newAvailability[editingIndex] = updatedAvailability;
+      setFormValues(newAvailability);
+      setEditingIndex(null); // Close edit form
+    } else {
+      setFormValues([...formValues, updatedAvailability]); // Add new availability
+      setShowNewScheduleForm(false); // Close new schedule form
+    }
   };
 
-  // Handle all-day toggle
-  const handleAllDayToggle = (index: number) => {
-    const newAvailability = [...formValues];
-    newAvailability[index].allDay = !newAvailability[index].allDay;
-    
-    setFormValues(newAvailability);
-  };
+  // Handle deleting availability
+  // const handleDelete = (index: number) => {
+  //   const newAvailability = formValues.filter((_, i) => i !== index);
+  //   setFormValues(newAvailability);
+  // };
 
-  // Handle time changes
-  const handleTimeChange = (index: number, type: 'startTime' | 'endTime', value: string) => {
-    const newAvailability = [...formValues];
-    newAvailability[index][type] = value;
-    setFormValues(newAvailability);
-  };
-
-  // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formValues); // Pass updated form values to the parent handler
-  };
+  if (editingIndex !== null || showNewScheduleForm)
+    return (
+      <ScheduleForm
+        currentValues={editingIndex !== null ? formValues[editingIndex] : null}
+        onSubmit={handleSubmit}
+        existingDays={formValues.flatMap((slot) => slot.days)} // To prevent duplicate days when adding new
+        onCancel={() => {
+          setEditingIndex(null);
+          setShowNewScheduleForm(false);
+        }}
+      />
+    );
 
   return (
-    <form
-      className="w-full"
-      onSubmit={handleSubmit}
-      autoComplete="off"
-    >
-      {/* Availability Slots */}
+    <div className="w-full">
+      {/* Existing Availability List */}
       {formValues.map((slot, index) => (
-        <div key={index} className="mb-6 border-b pb-4">
-          <h3 className="font-semibold mb-2">Availability Slot {index + 1}</h3>
-          
-          {/* Days Input */}
-          <label className="block text-gray-700 text-sm font-medium mb-4">
-            Select Available Days
-          </label>
-          <div className="grid grid-cols-3 gap-4">
-            {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day) => (
-              <label key={day} className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={slot.days.includes(day)}
-                  onChange={() => toggleDay(index, day)}
-                  className="w-4 h-4"
-                />
-                <span>{day}</span>
-              </label>
-            ))}
+        <div
+          key={index}
+          className="mb-6 flex items-center justify-between border-b pb-4"
+        >
+          <div className="grid gap-1">
+            <p className="font-medium">{slot.days.join(", ")} </p>
+            <p className="text-sm text-gray-500">
+              {slot.allDay ? "All Day" : `${slot.startTime} - ${slot.endTime}`}
+            </p>
           </div>
-
-          {/* Start Time Input */}
-          <div className="mb-2">
-            <label className="block text-gray-700 text-sm font-medium mb-2">
-              Start Time
-            </label>
-            <input
-              type="time"
-              value={slot.startTime}
-              className="input"
-              onChange={(e) => handleTimeChange(index, 'startTime', e.target.value)}
-              disabled={slot.allDay}
+          {/* Edit Icon */}
+          <div>
+            <BiMessageSquareEdit
+              className="text-xl cursor-pointer text-gray-400"
+              onClick={() => setEditingIndex(index)}
             />
-          </div>
-
-          {/* End Time Input */}
-          <div className="mb-2">
-            <label className="block text-gray-700 text-sm font-medium mb-2">
-              End Time
-            </label>
-            <input
-              type="time"
-              value={slot.endTime}
-              className="input"
-              onChange={(e) => handleTimeChange(index, 'endTime', e.target.value)}
-              disabled={slot.allDay}
-            />
-          </div>
-
-          {/* All Day Checkbox */}
-          <div className="mb-2">
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                checked={slot.allDay}
-                onChange={() => handleAllDayToggle(index)}
-                className="w-4 h-4"
-              />
-              <span>Available All Day</span>
-            </label>
           </div>
         </div>
       ))}
 
+      {/* Add New Schedule Button */}
+      <button className="formAdd" onClick={() => setShowNewScheduleForm(true)}>
+        Add New Schedule
+      </button>
+
       {/* Error Message */}
       {error && <Alert type="danger" message={error} />}
 
-      {/* Submit Button */}
-      <div className="text-center my-8">
-        <Btn
-          label="Submit"
-          type="primary"
-          disabled={isLoading}
-          btnAction="submit"
-          auth
-        />
+      {/* Done Button */}
+      <div className="text-center my-8" onClick={() => onSubmit(formValues)}>
+        <Btn label="Done" type="primary" disabled={isLoading} auth />
       </div>
-    </form>
+    </div>
   );
 };
 
