@@ -81,9 +81,9 @@ export default function PatientAuth() {
         navigate("/verify-email");
       } else if (activeTab === "login") {
         if (response.data.user.accountType === "partner") {
-          navigate("/dashboard/partner/doctor");
+          navigate("/auth/partner/accountType");
         } else {
-          navigate("/dashboard/patient")
+          navigate("/auth/patient/update-profile")
         }
       }
     } catch (error: any) {
