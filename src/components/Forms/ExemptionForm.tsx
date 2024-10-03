@@ -18,7 +18,7 @@ interface ExemptionFormProps {
 }
 
 const ExemptionForm: React.FC<ExemptionFormProps> = ({
-  exemption = { dates: [], startTime: "", endTime: "", allDay: false }, 
+  exemption = { dates: [], startTime: "", endTime: "", allDay: false },
   onSubmit,
   isLoading,
   error,
@@ -36,56 +36,57 @@ const ExemptionForm: React.FC<ExemptionFormProps> = ({
   const handleDateSelect = (dates: string[]) => {
     setFormValues({
       ...formValues,
-      dates: [...dates, ...formValues.dates]
+      dates: [...dates, ...formValues.dates],
     });
   };
 
   return (
-    <div
-    >
+    <div>
       {/* Calendar Component for Date Selection */}
       <CustomCalendar
         onDateSelect={handleDateSelect}
-        setCloseDate={() => { }}
+        setCloseDate={() => {}}
         isSelectDate
       />
 
-      {/* Start Time Input */}
-      <div className="mb-6">
-        <label className="block text-gray-700 text-sm font-medium mb-2">
-          Start Time
-        </label>
-        <input
-          type="time"
-          value={formValues?.startTime || ""}
-          className="input"
-          onChange={(e) =>
-            setFormValues({
-              ...formValues,
-              startTime: e.target.value,
-            })
-          }
-          disabled={formValues?.allDay}
-        />
-      </div>
+      <div className="flex gap-5">
+        {/* Start Time Input */}
+        <div className="mb-6 w-full">
+          <label className="block text-gray-700 text-sm font-medium mb-2">
+            Start Time
+          </label>
+          <input
+            type="time"
+            value={formValues?.startTime || ""}
+            className="input"
+            onChange={(e) =>
+              setFormValues({
+                ...formValues,
+                startTime: e.target.value,
+              })
+            }
+            disabled={formValues?.allDay}
+          />
+        </div>
 
-      {/* End Time Input */}
-      <div className="mb-6">
-        <label className="block text-gray-700 text-sm font-medium mb-2">
-          End Time
-        </label>
-        <input
-          type="time"
-          value={formValues?.endTime || ""}
-          className="input"
-          onChange={(e) =>
-            setFormValues({
-              ...formValues,
-              endTime: e.target.value,
-            })
-          }
-          disabled={formValues?.allDay}
-        />
+        {/* End Time Input */}
+        <div className="mb-6 w-full">
+          <label className="block text-gray-700 text-sm font-medium mb-2">
+            End Time
+          </label>
+          <input
+            type="time"
+            value={formValues?.endTime || ""}
+            className="input"
+            onChange={(e) =>
+              setFormValues({
+                ...formValues,
+                endTime: e.target.value,
+              })
+            }
+            disabled={formValues?.allDay}
+          />
+        </div>
       </div>
 
       {/* All Day Checkbox */}
@@ -105,13 +106,8 @@ const ExemptionForm: React.FC<ExemptionFormProps> = ({
       {error && <Alert type="danger" message={error} />}
 
       {/* Submit Button */}
-      <div className="text-center my-8" onClick={() =>  onSubmit(formValues)}>
-        <Btn
-          label="Submit"
-          type="primary"
-          disabled={isLoading}
-          auth
-        />
+      <div className="text-center my-8" onClick={() => onSubmit(formValues)}>
+        <Btn label="Submit" type="primary" disabled={isLoading} auth />
       </div>
     </div>
   );
