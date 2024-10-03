@@ -11,11 +11,13 @@ interface CustomCalendarProps {
   selectedDateRange?: string[] | null;
   onDateSelect: (dates: string[]) => void;
   setCloseDate: any;
+  isSelectDate?: boolean;
 }
 
 const CustomCalendar: React.FC<CustomCalendarProps> = ({
   onDateSelect,
   setCloseDate,
+  isSelectDate = false,
 }) => {
   const [currentMonth, setCurrentMonth] = useState(dayjs().startOf("month"));
   const [isRange, setIsRange] = useState(false); // For selecting date range
@@ -75,7 +77,7 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
     day.isAfter(firstSelectedDate) &&
     day.isBefore(secondSelectedDate);
 
-  // Handle "Filter" button click
+  // Handle "Filter" button click (for range selection)
   const handleFilter = () => {
     if (firstSelectedDate && secondSelectedDate) {
       // Return the range of dates
@@ -93,6 +95,7 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
       // Return the single selected date
       onDateSelect([firstSelectedDate.format("YYYY-MM-DD")]);
     }
+    setCloseDate(false); // Close calendar after filter
   };
 
   return (
@@ -115,18 +118,20 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
         </div>
 
         {/* Select Date Range Option */}
-        <div className="flex items-center mt-4">
-          <input
-            type="checkbox"
-            checked={isRange}
-            onChange={() => setIsRange(!isRange)}
-            id="dateRange"
-            className="mr-2"
-          />
-          <label htmlFor="dateRange" className="text-gray-800">
-            Select Date Range
-          </label>
-        </div>
+        {!isSelectDate && (
+          <div className="flex items-center mt-4">
+            <input
+              type="checkbox"
+              checked={isRange}
+              onChange={() => setIsRange(!isRange)}
+              id="dateRange"
+              className="mr-2"
+            />
+            <label htmlFor="dateRange" className="text-gray-800">
+              Select Date Range
+            </label>
+          </div>
+        )}
 
         {/* Weekdays Header (Mon-Sun) */}
         <div className="grid grid-cols-7 text-center py-6">
@@ -177,13 +182,16 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
         />
       </div>
 
-      <a
-        href="javascript:void(0)"
-        onClick={handleFilter}
-        className={`${firstSelectedDate ? "opacity-100" : "opacity-50"}`}
-      >
-        <Btn type="primary" label="Filter" auth />
-      </a>
+      {/* Filter Button (hidden when isSelectDate is true) */}
+      {!isSelectDate && (
+        <a
+          href="javascript:void(0)"
+          onClick={handleFilter}
+          className={`${firstSelectedDate ? "opacity-100" : "opacity-50"}`}
+        >
+          <Btn type="primary" label="Filter" auth />
+        </a>
+      )}
     </div>
   );
 };

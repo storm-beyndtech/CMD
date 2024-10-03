@@ -24,7 +24,6 @@ import AccountType from "./pages/Auth/Partners/AccountType";
 import PartnerLayout from "./components/Layouts/PartnerLayout";
 // import PartnerHome from "./pages/PartnerDashboard/PartnerHome";
 import DocConsultations from "./pages/DoctorsDashboard/DocConsultations";
-import Schedule from "./pages/PartnerDashboard/Schedule";
 import PaySuccess from "./pages/Auth/Patients/PaySuccess";
 import { contextData } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
@@ -33,6 +32,7 @@ import CompleteRegDoc from "./pages/Auth/Doctor/CompleteRegDoc";
 import AccountSetupDoc from "./pages/Auth/Doctor/AccountSetupDoc";
 import DoctorsHome from "./pages/DoctorsDashboard/DoctorsHome";
 import PatientInCare from "./pages/DoctorsDashboard/PatientInCare";
+import DocSchedulePage from "./pages/DoctorsDashboard/DocSchedulePage";
 
 // Main App Component
 export default function App() {
@@ -114,7 +114,7 @@ export default function App() {
         />
         <Route
           path="/dashboard/partner/doctor/schedule"
-          element={<Schedule />}
+          element={<DocSchedulePage />}
         />
         <Route
           path="/dashboard/partner/doctor/profile"

@@ -10,12 +10,14 @@ import DocAvailabilityForm from "../../../components/Forms/DocAvailabilityForm";
 export default function AccountSetupDoc() {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
-    availability: {
-      days: [],
-      startTime: "",
-      endTime: "",
-      allDay: false,
-    },
+    availability: [
+      {
+        days: [],
+        startTime: "",
+        endTime: "",
+        allDay: false,
+      }
+    ],
     primaryPracticeLocation: {
       hospital: "",
       department: "None",

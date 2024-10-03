@@ -97,7 +97,6 @@ export const navItemsDoctors = [
   },
 ];
 
-
 export const dummyDrugList = [
   {
     id: "1",
@@ -185,7 +184,6 @@ export const dummyDrugList = [
   },
 ];
 
-
 // labsData.js
 export const labs = [
   {
@@ -224,9 +222,6 @@ export const labs = [
     mapLink: "https://maps.google.com",
   },
 ];
-
-
-
 
 export const consultations = [
   {
@@ -439,3 +434,55 @@ export const docConsultations = [
     location: "Princeton Hospital, Ikeja",
   },
 ];
+
+export const dummySchedule = {
+  exemptions: [
+    { date: "September 15, 2024", allDay: true },
+    {
+      date: "September 13, 2024",
+      startTime: "10am",
+      endTime: "12pm",
+      allDay: false,
+    },
+  ],
+
+  availability: [
+    {
+      days: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+      startTime: "9am",
+      endTime: "10pm",
+      allDay: false,
+    },
+    { days: ["Sat"], startTime: "9am", endTime: "6pm", allDay: false },
+  ],
+
+  days: [
+    { date: "2024-10-06", available: true, consultationCount: 1 },
+    {
+      date: "2024-10-03",
+      available: true,
+      consultationCount: 2,
+      concluded: true,
+    },
+    {
+      date: "2024-10-01",
+      available: true,
+      consultationCount: 1,
+      partUnavailable: true,
+    },
+    { date: "2024-10-05", available: false, consultationCount: 0 },
+    { date: "2024-10-20", available: false, consultationCount: 0 },
+
+    // 5 additional random objects
+    { date: "2024-10-07", available: true, consultationCount: 3 },
+    { date: "2024-10-08", available: false, consultationCount: 0 },
+    { date: "2024-10-17", available: true, consultationCount: 1 },
+    {
+      date: "2024-10-02",
+      available: true,
+      consultationCount: 1,
+      concluded: true,
+    },
+    { date: "2024-10-04", available: false, consultationCount: 0 },
+  ],
+};

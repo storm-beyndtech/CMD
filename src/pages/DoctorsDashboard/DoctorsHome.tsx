@@ -3,6 +3,8 @@ import avatar1 from "../../assets/avatar/avatar-1.svg";
 import avatar2 from "../../assets/avatar/avatar-2.svg";
 import PatientsInCare from "../../components/PatientsInCare";
 import { Link } from "react-router-dom";
+import DocScheduleDays from "../../components/DocScheduleDays";
+import { dummySchedule } from "../../lib/dashboardUtils";
 
 export default function DoctorsHome() {
   const inCare = [
@@ -43,6 +45,7 @@ export default function DoctorsHome() {
 
   return (
     <div className="grid gap-5">
+      <DocScheduleDays daysWithInfo={dummySchedule.days} />
       <div className="w-full p-6 rounded-[14px] bg-white">
         <h2 className="font-semibold text-[#2B2F38]">Today's Consultations</h2>
         <p className="text-xs text-[#9ea1a7] my-1.5 mb-4">
