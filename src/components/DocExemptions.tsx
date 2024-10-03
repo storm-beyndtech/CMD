@@ -13,18 +13,20 @@ interface ExemptionsProps {
 
 const DocExemptions: React.FC<ExemptionsProps> = ({ exemptions }) => {
   return (
-    <div className="mt-4">
-      <h3 className="text-lg font-semibold mb-2">Closed Dates / Exemptions</h3>
+    <div className="mt-4 p-[22px] rounded-[14px] bg-white">
+      <h3 className="text-lg font-semibold text-[#383E49] mb-4">
+        Closed Dates / Exemptions
+      </h3>
       <ul className="space-y-2">
         {exemptions.map((exemption, index) => (
-          <li key={index} className="bg-gray-100 p-4 rounded-md">
-            <div className="font-medium">{exemption.date}</div>
+          <li key={index} className="p-3 border border-gray-200 rounded-2xl">
+            <div className="font-medium mb-1">{exemption.date}</div>
             {exemption.allDay ? (
-              <div>All-Day</div>
+              <p className="text-sm text-gray-400">All-Day</p>
             ) : (
-              <div>
+              <p className="text-sm text-gray-400">
                 {exemption.startTime} - {exemption.endTime}
-              </div>
+              </p>
             )}
           </li>
         ))}
