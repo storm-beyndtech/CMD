@@ -8,8 +8,14 @@ const PrescriptionForm: React.FC = () => {
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
 
   // Function to add a new prescription from the form
-  const handleAddPrescription = (newPrescription: Prescription) => {
-    setPrescriptions([...prescriptions, newPrescription]);
+  const handleAddPrescription = (prescription: Prescription) => {
+    setPrescriptions([...prescriptions, prescription]);
+  };
+
+  
+  // Remove medication from the list
+  const handleRemovePrescription = (prescription: Prescription) => {
+    setPrescriptions(prescriptions.filter((_) => _.drug.name !== prescription.drug.name));
   };
 
   // Function to move to the confirmation step
@@ -33,8 +39,10 @@ const PrescriptionForm: React.FC = () => {
       ) : (
         // Otherwise, show the PrescriptionForm component
         <AddPrescriptionForm
-          addPrescription={handleAddPrescription}
-          goToConfirmation={goToConfirmation}
+            addPrescription={handleAddPrescription}
+            goToConfirmation={goToConfirmation}
+            handleRemovePrescription={handleRemovePrescription}
+            prescriptions={prescriptions}
         />
       )}
     </div>

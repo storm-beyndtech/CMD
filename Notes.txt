@@ -1,0 +1,4 @@
+/profile
+/doctors/profile
+/labs/profile
+/pharmacy/profile

@@ -13,6 +13,8 @@ import consultation from "../assets/sidebar-icons/consultation.svg";
 import consultationActive from "../assets/sidebar-icons/consultation-active.svg";
 import clock from "../assets/sidebar-icons/clock.svg";
 import clockActive from "../assets/sidebar-icons/clock-active.svg";
+import delivery from "../assets/sidebar-icons/delivery.svg";
+import deliveryActive from "../assets/sidebar-icons/delivery-active.svg";
 
 //avatar
 import avatar1 from "../assets/avatar/avatar-1.svg";
@@ -31,14 +33,6 @@ import lab3 from "../assets/dummyLabs/lab-3.svg";
 import lab4 from "../assets/dummyLabs/lab-4.svg";
 import lab5 from "../assets/dummyLabs/lab-5.svg";
 
-//results
-import doc1 from "../assets/result-1.svg";
-import doc2 from "../assets/result-2.svg";
-
-//drugs
-import tadafil from "../assets/dummy-drugs/Tadafil.svg";
-import finasteride from "../assets/dummy-drugs/Finasteride.svg";
-
 // account types
 import lab from "../assets/accountTypes/lab.svg";
 import pharmacy from "../assets/accountTypes/pharmacy.svg";
@@ -46,7 +40,13 @@ import hospitalImg from "../assets/accountTypes/hospital.svg";
 import doctor from "../assets/accountTypes/doctor.svg";
 import travelNurse from "../assets/accountTypes/travelNurse.svg";
 
-export const navItems = [
+
+//dummy Results
+//results
+import doc1 from "../assets/result-1.svg";
+import doc2 from "../assets/result-2.svg";
+
+export const navItemsPatient = [
   {
     to: "/dashboard/patient",
     label: "Dashboard",
@@ -74,7 +74,7 @@ export const navItems = [
   },
 ];
 
-export const navItemsDoctors = [
+export const navItemsDoctor = [
   {
     to: "/dashboard/partner/doctor",
     label: "Dashboard",
@@ -92,6 +92,50 @@ export const navItemsDoctors = [
   },
   {
     to: "/dashboard/partner/doctor/profile",
+    label: "Profile",
+    icons: { default: profile, active: profileActive },
+  },
+];
+
+
+export const navItemsPharmacy = [
+  {
+    to: "/dashboard/partner/pharmacy",
+    label: "Dashboard",
+    icons: { default: grid, active: gridActive },
+  },
+  {
+    to: "/dashboard/partner/pharmacy/orders",
+    label: "Orders",
+    icons: { default: delivery, active: deliveryActive },
+  },
+  {
+    to: "/dashboard/partner/pharmacy/inventory",
+    label: "Inventory",
+    icons: { default: pills, active: pillsActive },
+  },
+  {
+    to: "/dashboard/partner/pharmacy/profile",
+    label: "Profile",
+    icons: { default: profile, active: profileActive },
+  },
+];
+
+
+
+export const navItemsLab = [
+  {
+    to: "/dashboard/partner/lab",
+    label: "Dashboard",
+    icons: { default: grid, active: gridActive },
+  },
+  {
+    to: "/dashboard/partner/lab/appointments",
+    label: "Appointments",
+    icons: { default: clock, active: clockActive },
+  },
+  {
+    to: "/dashboard/partner/lab/profile",
     label: "Profile",
     icons: { default: profile, active: profileActive },
   },
@@ -223,6 +267,8 @@ export const labs = [
   },
 ];
 
+
+
 export const consultations = [
   {
     id: "1",
@@ -230,8 +276,9 @@ export const consultations = [
     type: "Follow-up",
     status: "Completed",
     partner: "Dr. Jane Smith",
+    testType: "Blood Test",
     notes:
-      "Patient presented with symptoms of fatigue and shortness of breath. Possible anemia or vitamin deficiency. Blood tests and physical examination recommended to confirm diagnosis. The prescription below will help minimise the effect of these.",
+      "Patient presented with symptoms of fatigue and shortness of breath. Possible anemia or vitamin deficiency. Blood tests and physical examination recommended to confirm diagnosis. The prescription below will help minimize the effect of these.",
     documents: [doc1, doc2],
     lastVisit: "2024-08-20",
     remarks:
@@ -252,26 +299,168 @@ export const consultations = [
         drug: {
           id: "3",
           price: 300,
-          imageUrl: tadafil,
+          imageUrl: "tadafil_image_url",
           name: "Tadafil",
           strength: "5mg/10mg",
         },
       },
       {
         dosage: "2 Tabs - Three times a Day",
-        refillDate: "Refill available after Oct 11, 2024 ",
+        refillDate: "Refill available after Oct 11, 2024",
         refill: "Yes",
         drug: {
           id: "1",
           price: 250,
-          imageUrl: finasteride,
+          imageUrl: "finasteride_image_url",
           name: "Atorvastatin",
           strength: "5mg",
         },
       },
     ],
+    patientDetails: {
+      note: "Feeling unwell for the past few days with fever and cough.",
+      isCurrentMedication: false,
+      currentLocation: "Home",
+      selectedLab: "None",
+      // Basic profile details
+      name: "George Joe",
+      age: 35,
+      gender: "Male",
+      address: "123 Main St, Cityville",
+      contactNumber: "+123456789",
+      photo: {
+        url: avatar1
+      }
+    },
+  },
+  {
+    id: "2",
+    date: "2024-09-26",
+    type: "Follow-up",
+    status: "In Progress",
+    partner: "Dr. Jane Smith",
+    testType: "Blood Test",
+    notes:
+      "Patient presented with symptoms of fatigue and shortness of breath. Possible anemia or vitamin deficiency. Blood tests and physical examination recommended to confirm diagnosis. The prescription below will help minimize the effect of these.",
+    documents: [doc1, doc2],
+    lastVisit: "2024-08-20",
+    remarks:
+      "Good news! All your test results came back within normal ranges. No further action is required, but we recommend sharing these results with your doctor for ongoing care.",
+    tests: {
+      bloodGroup: "O+",
+      genotype: "AA",
+      height: "175 cm",
+      weight: "70 kg",
+      allergy: "None",
+    },
+    uploads: [doc1, doc2],
+    prescriptions: [
+      {
+        dosage: "1 Tab - Once daily",
+        refillDate: "",
+        refill: "No",
+        drug: {
+          id: "3",
+          price: 300,
+          imageUrl: "tadafil_image_url",
+          name: "Tadafil",
+          strength: "5mg/10mg",
+        },
+      },
+      {
+        dosage: "2 Tabs - Three times a Day",
+        refillDate: "Refill available after Oct 11, 2024",
+        refill: "Yes",
+        drug: {
+          id: "1",
+          price: 250,
+          imageUrl: "finasteride_image_url",
+          name: "Atorvastatin",
+          strength: "5mg",
+        },
+      },
+    ],
+    patientDetails: {
+      note: "Feeling unwell for the past few days with fever and cough.",
+      isCurrentMedication: false,
+      currentLocation: "Home",
+      selectedLab: "None",
+      // Basic profile details
+      name: "George Joe",
+      age: 35,
+      gender: "Male",
+      address: "123 Main St, Cityville",
+      contactNumber: "+123456789",
+      photo: {
+        url: avatar1
+      }
+    },
+  },
+  {
+    id: "3",
+    date: "2024-09-26",
+    type: "Follow-up",
+    status: "Completed",
+    partner: "Dr. Jane Smith",
+    testType: "Blood Test",
+    notes:
+      "Patient presented with symptoms of fatigue and shortness of breath. Possible anemia or vitamin deficiency. Blood tests and physical examination recommended to confirm diagnosis. The prescription below will help minimize the effect of these.",
+    documents: [doc1, doc2],
+    lastVisit: "2024-08-20",
+    remarks:
+      "Good news! All your test results came back within normal ranges. No further action is required, but we recommend sharing these results with your doctor for ongoing care.",
+    tests: {
+      bloodGroup: "O+",
+      genotype: "AA",
+      height: "175 cm",
+      weight: "70 kg",
+      allergy: "None",
+    },
+    uploads: [doc1, doc2],
+    prescriptions: [
+      {
+        dosage: "1 Tab - Once daily",
+        refillDate: "",
+        refill: "No",
+        drug: {
+          id: "3",
+          price: 300,
+          imageUrl: "tadafil_image_url",
+          name: "Tadafil",
+          strength: "5mg/10mg",
+        },
+      },
+      {
+        dosage: "2 Tabs - Three times a Day",
+        refillDate: "Refill available after Oct 11, 2024",
+        refill: "Yes",
+        drug: {
+          id: "1",
+          price: 250,
+          imageUrl: "finasteride_image_url",
+          name: "Atorvastatin",
+          strength: "5mg",
+        },
+      },
+    ],
+    patientDetails: {
+      note: "Feeling unwell for the past few days with fever and cough.",
+      isCurrentMedication: false,
+      currentLocation: "Home",
+      selectedLab: "None",
+      // Basic profile details
+      name: "George Joe",
+      age: 35,
+      gender: "Male",
+      address: "123 Main St, Cityville",
+      contactNumber: "+123456789",
+      photo: {
+        url: avatar1
+      }
+    },
   },
 ];
+
 
 export const transactions = [
   {
@@ -308,27 +497,6 @@ export const transactions = [
     date: "Oct 13, 2024",
     amount: "$40.00",
     status: "Completed",
-  },
-  {
-    id: "6",
-    desc: "External",
-    date: "Oct 19, 2024",
-    amount: "$80.00",
-    status: "Refunded",
-  },
-  {
-    id: "7",
-    desc: "Internal - CMD Rx - Prescription drugs",
-    date: "Oct 29, 2024",
-    amount: "$310.00",
-    status: "Completed",
-  },
-  {
-    id: "8",
-    desc: "External",
-    date: "Oct 09, 2024",
-    amount: "$100.00",
-    status: "Refunded",
   },
 ];
 
@@ -393,46 +561,6 @@ export const docConsultations = [
     meetingLink: "https://meet.google.com/xyz-abc",
     location: "Lagos Health Clinic, Lekki",
   },
-  {
-    id: "5",
-    patientName: "John Doe",
-    appointmentTime: "Sep 15, 2024, 10:00 AM",
-    imageUrl: avatar1,
-    meetingLink: "https://meet.google.com/edr-ghj-yti",
-    location: "Lagos Health Clinic, Lekki",
-  },
-  {
-    id: "6",
-    patientName: "Jane Doe",
-    appointmentTime: "Oct 15, 2024, 11:00 AM",
-    imageUrl: avatar2,
-    meetingLink: "https://meet.google.com/xyz-abc",
-    location: "Lagos Health Clinic, Lekki",
-  },
-  {
-    id: "7",
-    patientName: "John Doe",
-    appointmentTime: "Oct 15, 2024, 10:00 AM",
-    imageUrl: avatar1,
-    meetingLink: "https://meet.google.com/edr-ghj-yti",
-    location: "Princeton Hospital, Ikeja",
-  },
-  {
-    id: "8",
-    patientName: "Jane Doe",
-    appointmentTime: "Oct 15, 2024, 11:00 AM",
-    imageUrl: avatar2,
-    meetingLink: "https://meet.google.com/xyz-abc",
-    location: "Lagos Health Clinic, Lekki",
-  },
-  {
-    id: "9",
-    patientName: "John Doe",
-    appointmentTime: "Oct 15, 2024, 10:00 AM",
-    imageUrl: avatar1,
-    meetingLink: "https://meet.google.com/edr-ghj-yti",
-    location: "Princeton Hospital, Ikeja",
-  },
 ];
 
 export const dummySchedule = {
@@ -486,3 +614,42 @@ export const dummySchedule = {
     { date: "2024-10-04", available: false, consultationCount: 0 },
   ],
 };
+
+
+
+
+
+export const labAppointments = [
+  {
+    id: "1",
+    patientName: "John Doe",
+    appointmentTime: "Oct 15, 2024, 10:00 AM",
+    imageUrl: avatar1,
+    meetingLink: "https://meet.google.com/edr-ghj-yti",
+    location: "Lagos Health Clinic, Lekki",
+  },
+  {
+    id: "2",
+    patientName: "Jane Doe",
+    appointmentTime: "Nov 15, 2024, 11:00 AM",
+    imageUrl: avatar2,
+    meetingLink: "https://meet.google.com/xyz-abc",
+    location: "Princeton Hospital, Ikeja",
+  },
+  {
+    id: "3",
+    patientName: "John Doe",
+    appointmentTime: "Oct 15, 2024, 10:00 AM",
+    imageUrl: avatar1,
+    meetingLink: "https://meet.google.com/edr-ghj-yti",
+    location: "Princeton Hospital, Ikeja",
+  },
+  {
+    id: "4",
+    patientName: "Jane Doe",
+    appointmentTime: "Oct 15, 2024, 11:00 AM",
+    imageUrl: avatar2,
+    meetingLink: "https://meet.google.com/xyz-abc",
+    location: "Lagos Health Clinic, Lekki",
+  },
+];

@@ -3,15 +3,20 @@ import { dummyDrugList } from "../../lib/dashboardUtils";
 import Btn from "../UI/Btn";
 import { Prescription, Drug } from "../../types/types"; // Assuming you have a Drug type
 import { IoCloseCircleSharp } from "react-icons/io5";
+import Alert from "../UI/Alert";
 
 interface AddPrescriptionFormProps {
   addPrescription: (prescription: Prescription) => void;
   goToConfirmation: () => void;
+  handleRemovePrescription: (prescription: Prescription) => void;
+  prescriptions: Prescription[];
 }
 
 export default function AddPrescriptionForm({
   addPrescription,
   goToConfirmation,
+  handleRemovePrescription,
+  prescriptions,
 }: AddPrescriptionFormProps) {
   const [selectedMedication, setSelectedMedication] = useState<Drug | null>(
     null,
@@ -21,27 +26,35 @@ export default function AddPrescriptionForm({
   const [timeframe, setTimeframe] = useState("Daily");
   const [refill, setRefill] = useState("No");
   const [refillDate, setRefillDate] = useState("");
-  const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
+  const [error, setError] = useState<null | string>(null);
 
   // Handle medication selection (now sets the entire drug object)
   const handleMedicationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedDrug = dummyDrugList.find(
-      (drug) => drug.id === e.target.value,
+      (drug) => drug.name === e.target.value,
     );
     setSelectedMedication(selectedDrug || null);
   };
 
   // Handle adding the medication to the list
   const addMedication = () => {
+    setError(null);
     if (selectedMedication) {
+      if (tabs.length < 1 || frequency.length < 1) return setError("Please fill out dosage properly")
+
+      
       const newPrescription: Prescription = {
         dosage: `${tabs} • ${frequency} • ${timeframe}`,
         refill,
-        ...(refill === "Yes" && { refillDate }), // Only include refillDate if it's set to Yes
-        drug: selectedMedication, // Add the entire selected medication object
+        ...(refill === "Yes" && { refillDate }),
+        drug: selectedMedication,
       };
 
-      setPrescriptions([...prescriptions, newPrescription]);
+      const duplicateDrug = prescriptions.find((_) => _.drug.id === newPrescription.drug.id)
+      if (duplicateDrug) return setError("Drug already exist for this patient")
+      
+      console.log(duplicateDrug, error)
+      addPrescription(newPrescription);
 
       // Reset the form fields for new input
       setTabs("");
@@ -52,22 +65,16 @@ export default function AddPrescriptionForm({
     }
   };
 
-  // Remove medication from the list
-  const removeMedication = (index: number) => {
-    setPrescriptions(prescriptions.filter((_, i) => i !== index));
-  };
-
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
 
     if (prescriptions.length > 0) {
       prescriptions.forEach((prescription) => addPrescription(prescription));
-
-      // Move to the confirmation step
       goToConfirmation();
     } else {
-      alert("Please add at least one medication.");
+      setError("Please add at least one medication.");
     }
   };
 
@@ -85,9 +92,11 @@ export default function AddPrescriptionForm({
               className="mt-1 input"
               value={selectedMedication?.name || ""}
             >
-              <option value="">Select</option>
+              <option value="" disabled>
+                Select
+              </option>
               {dummyDrugList.map((drug, i) => (
-                <option key={i} value={drug.id}>
+                <option key={i} value={drug.name}>
                   {drug.name}
                 </option>
               ))}
@@ -184,7 +193,7 @@ export default function AddPrescriptionForm({
                       <span>{prescription.drug.name}</span>
                       <IoCloseCircleSharp
                         className="ml-2 cursor-pointer text-red-600"
-                        onClick={() => removeMedication(i)}
+                        onClick={() => handleRemovePrescription(prescription)}
                       />
                     </div>
                   ))}
@@ -202,6 +211,12 @@ export default function AddPrescriptionForm({
             </>
           )}
         </div>
+
+        {error && (
+          <div className="mt-4">
+            <Alert type="danger" message={error} />
+          </div>
+        )}
 
         {/* Submit Button */}
         <Btn label="Send with Results" type="primary" form />

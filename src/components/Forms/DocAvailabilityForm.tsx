@@ -1,5 +1,7 @@
+import { useState } from "react";
 import Alert from "../UI/Alert";
 import Btn from "../UI/Btn";
+import { IoCloseCircleSharp } from "react-icons/io5";
 
 export default function DocAvailabilityForm({
   onSubmit,
@@ -8,38 +10,80 @@ export default function DocAvailabilityForm({
   error,
   setFormValues,
 }: any) {
+  // Local state to track the current schedule being added
+  const [currentSchedule, setCurrentSchedule] = useState({
+    days: [] as string[],
+    startTime: "",
+    endTime: "",
+    allDay: false,
+  });
 
-  // Handle checkbox toggle for days
-  const toggleDay = (day: string, index: number) => {
-    const newDays = formValues.availability[index].days.includes(day)
-      ? formValues.availability[index].days.filter((d: string) => d !== day)
-      : [...formValues.availability[index].days, day];
-  
-    setFormValues({
-      ...formValues,
-      availability: formValues.availability.map((avail:any, i:number) =>
-        i === index ? { ...avail, days: newDays } : avail
-      ),
+  // Handle checkbox toggle for days in the currentSchedule
+  const toggleDay = (day: string) => {
+    const newDays = currentSchedule.days.includes(day)
+      ? currentSchedule.days.filter((d) => d !== day)
+      : [...currentSchedule.days, day];
+
+    setCurrentSchedule({
+      ...currentSchedule,
+      days: newDays,
     });
   };
-  
 
-  // Handle all-day toggle for each availability object
-  const handleAllDayToggle = (index: number) => {
-    const updatedAvailability = formValues.availability.map(
-      (avail: any, i: number) =>
-        i === index
-          ? {
-              ...avail,
-              allDay: !avail.allDay,
-            }
-          : avail,
+  // Handle all-day toggle for the current schedule
+  const handleAllDayToggle = () => {
+    setCurrentSchedule((prev) => ({
+      ...prev,
+      allDay: !prev.allDay,
+      startTime: "",
+      endTime: "",
+    }));
+  };
+
+  // Check if the schedule is valid (either start/end time is provided or all day is selected)
+  const isScheduleValid = () => {
+    return (
+      currentSchedule.days.length > 0 &&
+      (currentSchedule.allDay ||
+        (currentSchedule.startTime && currentSchedule.endTime))
     );
+  };
 
+  // Add current schedule to the availability list
+  const addSchedule = () => {
+    if (isScheduleValid()) {
+      // Add currentSchedule to availability
+      setFormValues({
+        ...formValues,
+        availability: [...formValues.availability, currentSchedule],
+      });
+
+      // Clear the currentSchedule
+      setCurrentSchedule({
+        days: [],
+        startTime: "",
+        endTime: "",
+        allDay: false,
+      });
+    }
+  };
+
+  // Remove a schedule
+  const removeSchedule = (index: number) => {
+    const updatedAvailability = formValues.availability.filter(
+      (_: any, i: number) => i !== index,
+    );
     setFormValues({
       ...formValues,
       availability: updatedAvailability,
     });
+  };
+
+  // Check if a day is already selected in any added schedule
+  const isDayDisabled = (day: string) => {
+    return formValues.availability.some((schedule: any) =>
+      schedule.days.includes(day),
+    );
   };
 
   return (
@@ -48,100 +92,131 @@ export default function DocAvailabilityForm({
       onSubmit={onSubmit}
       autoComplete="off"
     >
-      {formValues.availability.map((availability:any, index:number) => (
-        <div key={index} className="mb-6 border-b pb-6">
-          <h3 className="text-lg font-semibold mb-4">
-            Availability {index + 1}
-          </h3>
+      <div className="border-b">
+        <h3 className="text-lg font-semibold mb-4">Add Availability</h3>
 
-          {/* Days Input */}
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-medium mb-4">
-              Select Available Days
-            </label>
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-                "Sunday",
-              ].map((day) => (
-                <label key={day} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    checked={availability?.days.includes(day)}
-                    onChange={() => toggleDay(day, index)}
-                    className="w-4 h-4"
-                  />
-                  <span>{day}</span>
-                </label>
-              ))}
-            </div>
+        {/* Days Input */}
+        <div className="mb-6">
+          <label className="block text-gray-700 text-sm font-medium mb-4">
+            Select Available Days
+          </label>
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday",
+            ].map((day) => (
+              <label key={day} className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={currentSchedule.days.includes(day)}
+                  onChange={() => toggleDay(day)}
+                  className="w-4 h-4"
+                  disabled={isDayDisabled(day)} // Disable if day is already in any schedule
+                />
+                <span>{day}</span>
+              </label>
+            ))}
           </div>
+        </div>
 
+        <div className="flex gap-5 mt-8">
           {/* Start Time Input */}
-          <div className="mb-6">
+          <div className="mb-6 w-full">
             <label className="block text-gray-700 text-sm font-medium mb-2">
               Start Time
             </label>
             <input
               type="time"
-              value={availability?.startTime || ""}
+              value={currentSchedule.startTime}
               className="input"
               onChange={(e) =>
-                setFormValues({
-                  ...formValues,
-                  availability: formValues.availability.map((avail:any, i:number) =>
-                    i === index
-                      ? { ...avail, startTime: e.target.value }
-                      : avail,
-                  ),
+                setCurrentSchedule({
+                  ...currentSchedule,
+                  startTime: e.target.value,
                 })
               }
-              disabled={availability?.allDay}
+              disabled={currentSchedule.allDay}
             />
           </div>
 
           {/* End Time Input */}
-          <div className="mb-6">
+          <div className="mb-6 w-full">
             <label className="block text-gray-700 text-sm font-medium mb-2">
               End Time
             </label>
             <input
               type="time"
-              value={availability?.endTime || ""}
+              value={currentSchedule.endTime}
               className="input"
               onChange={(e) =>
-                setFormValues({
-                  ...formValues,
-                  availability: formValues.availability.map((avail:any, i:number) =>
-                    i === index ? { ...avail, endTime: e.target.value } : avail,
-                  ),
+                setCurrentSchedule({
+                  ...currentSchedule,
+                  endTime: e.target.value,
                 })
               }
-              disabled={availability?.allDay}
+              disabled={currentSchedule.allDay}
             />
           </div>
-
-          {/* All Day Checkbox */}
-          <div className="mb-6">
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                checked={availability?.allDay}
-                onChange={() => handleAllDayToggle(index)}
-                className="w-4 h-4"
-              />
-              <span>Available All Day</span>
-            </label>
-          </div>
         </div>
-      ))}
+        {/* All Day Checkbox */}
+        <div className="mb-4">
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={currentSchedule.allDay}
+              onChange={handleAllDayToggle}
+              className="w-4 h-4"
+            />
+            <span>Available All Day</span>
+          </label>
+        </div>
 
-      <p className="text-xs text-warning mt-4">
+        {/* Add Schedule Button */}
+        <button
+          type="button"
+          className="formAdd mt-4"
+          onClick={addSchedule}
+          disabled={!isScheduleValid()} // Disable if schedule is invalid
+        >
+          <span className="font-bold text-lg">+</span> Add Schedule
+        </button>
+      </div>
+
+      {/* Display Added Schedules */}
+      {formValues.availability.length > 0 && (
+        <div className="flex flex-wrap gap-2 mt-3">
+          {formValues.availability
+            .filter(
+              (schedule: any) =>
+                // Only show if schedule has allDay or both startTime and endTime filled
+                schedule.allDay || (schedule.startTime && schedule.endTime),
+            )
+            .map((schedule: any, i: number) => (
+              <div
+                key={i}
+                className="text-xs flex items-center bg-gray-100 px-3 py-1 rounded-md"
+              >
+                <span>
+                  {schedule.days.join(", ")} -{" "}
+                  {schedule.allDay
+                    ? "All Day"
+                    : `${schedule.startTime} to ${schedule.endTime}`}
+                </span>
+                <IoCloseCircleSharp
+                  className="ml-2 cursor-pointer text-red-600 text-base"
+                  onClick={() => removeSchedule(i)}
+                />
+              </div>
+            ))}
+        </div>
+      )}
+
+      <p className="text-xs text-warning my-3">
         Add Days and Time Variants, e.g Mon: 9am - 9pm, Sat: 10am - 2pm
       </p>
 
@@ -149,7 +224,7 @@ export default function DocAvailabilityForm({
       {error && <Alert type="danger" message={error} />}
 
       {/* Submit Button */}
-      <div className="text-center my-8">
+      <div className="text-center my-3">
         <Btn
           label="Submit"
           type="primary"

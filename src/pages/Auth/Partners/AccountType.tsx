@@ -1,18 +1,34 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
 import checked from "../../../assets/icons/tick-circle.svg";
 import { accountTypes } from "../../../lib/dashboardUtils";
 import { useState } from "react";
 import Btn from "../../../components/UI/Btn";
+import { contextData } from "../../../context/AuthContext";
+import PageLoader from "../../../components/PageLoader";
 
 export default function AccountType() {
+  const { profile, fetching, user } = contextData();
   const navigate = useNavigate()
   const [accountType, setAccountType] = useState("");
 
+  if (fetching) return <PageLoader />;
+  
+  if (profile) {
+    if (user.partnerType === "doctor") {
+        return <Navigate to="/dashboard/partner/doctor/" replace />;
+    }
+  }
 
   const submitAccountType = async () => {
-    if (accountType.length > 3) {
-      navigate("/auth/partner/doctor/complete-reg")
+    if (accountType === "Doctor") {
+      navigate("/dashboard/partner/doctor/")
+    }
+    if (accountType === "Lab") {
+      navigate("/dashboard/partner/lab/")
+    }
+    if (accountType === "Pharmacy") {
+      navigate("/dashboard/partner/pharmacy/")
     }
   }
 

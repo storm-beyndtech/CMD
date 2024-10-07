@@ -4,29 +4,10 @@ import avatar2 from "../../assets/avatar/avatar-2.svg";
 import PatientsInCare from "../../components/PatientsInCare";
 import { Link } from "react-router-dom";
 import DocScheduleDays from "../../components/DocScheduleDays";
-import { dummySchedule } from "../../lib/dashboardUtils";
+import { docConsultations, dummySchedule } from "../../lib/dashboardUtils";
 
-export default function DoctorsHome() {
-  const inCare = [
-    {
-      patientName: "John Doe",
-      appointmentTime: "Sep 15, 2024, 10:00 AM",
-      location: "Princeton Hospital, Ikeja",
-      imageUrl: avatar1,
-    },
-    {
-      patientName: "Jane Doe",
-      appointmentTime: "Sep 15, 2024, 11:00 AM",
-      location: "Lagos Health Clinic, Lekki",
-      imageUrl: avatar2,
-    },
-    {
-      patientName: "John Doe",
-      appointmentTime: "Sep 15, 2024, 10:00 AM",
-      location: "Princeton Hospital, Ikeja",
-      imageUrl: avatar1,
-    },
-  ];
+export default function DocHome() {
+  const inCare = docConsultations
 
   const consultations = [
     {

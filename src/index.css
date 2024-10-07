@@ -26,6 +26,31 @@ button {
   letter-spacing: 0.8px;
 }
 
+
+.slideLoad {
+  transition: all ease-in-out 1s;
+  animation: toNfro 3s linear 0s infinite;
+  position: absolute;
+  left: 0;
+  bottom: -20px;
+}
+
+@keyframes toNfro {
+  0% {
+    width: 0%;
+    left: 0%;
+  }
+  50% {
+    width: 40%;
+    left: 60%;
+  }
+  100% {
+    width: 0%;
+    left: 0%;
+  }
+}
+
+
 .spin {
   animation: spin 1s linear infinite;
   font-size: 1rem;

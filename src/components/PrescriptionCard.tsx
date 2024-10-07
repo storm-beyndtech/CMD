@@ -7,7 +7,7 @@ interface PrescriptionCardProps {
 
 const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription }) => {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4 flex-shrink-0">
       <img
         src={prescription.drug.imageUrl}
         alt={prescription.drug.name}

@@ -6,8 +6,10 @@ import UpdateForm from "../../../components/Forms/UpdateForm";
 import { handleInputChange } from "../../../utility/handleInput";
 import { sendRequest } from "../../../utility/sendRequest";
 import { validateProfileFields } from "../../../utility/validators";
+import { contextData } from "../../../context/AuthContext";
 
 export default function PatientUpdateProfile() {
+  const { setProfile } = contextData()
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     dateOfBirth: "",
@@ -37,7 +39,8 @@ export default function PatientUpdateProfile() {
 
     try {
       setLoading(true);
-      await sendRequest("/profile", "PUT", FormData);
+      const res = await sendRequest("/profile", "PUT", FormData);
+      setProfile(res.data)
       navigate("/auth/patient/package");
     } catch (error: any) {
       if (error.message === "Profile already completed")

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CgSoftwareUpload } from "react-icons/cg";
 import Btn from "../UI/Btn";
 
-export default function AddNotesForm() {
+export default function AddLabResult({ onSubmit }: {onSubmit: () => void }) {
   const [notes, setNotes] = useState("");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
@@ -12,7 +12,7 @@ export default function AddNotesForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle note submission logic here
+    onSubmit();
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

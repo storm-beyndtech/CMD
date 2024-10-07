@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Alert from "../UI/Alert";
 import Btn from "../UI/Btn";
 import { BsCheckSquare } from "react-icons/bs";
@@ -33,12 +33,44 @@ export default function DocSpecialtyForm({
   setFormValues,
 }: any) {
   const [practiceLocations, setPracticeLocations] = useState<Location[]>([]);
+
   const [newLocation, setNewLocation] = useState<Location>({
     officeName: "",
     address: "",
     country: "Nigeria",
   });
+
   const [specialities, setSpecialities] = useState<string[]>([]);
+
+  useEffect(() => {
+    setPracticeLocations(
+      formValues.practiceLocations.map((location: any) => ({
+        officeName: location.hospital,
+        address: location.location[0],
+        country: "Nigeria",
+      })) || [],
+    );
+
+
+
+    setNewLocation({
+      officeName:
+        formValues.practiceLocations[
+          formValues.length > 1 ? formValues.length - 1 : 0
+        ].hospital || "",
+      address:
+        formValues.practiceLocations[
+          formValues.length > 1 ? formValues.length - 1 : 0
+        ].location[0] || "",
+      country: "Nigeria",
+    });
+
+
+    setSpecialities(formValues.specialities)
+  }, []);
+
+
+
 
   // Handles Adding a New Practice Location
   const addPracticeLocation = () => {
@@ -182,10 +214,11 @@ export default function DocSpecialtyForm({
         <input
           type="number"
           value={experienceYears}
-          placeholder="0"
+          placeholder="1"
           className="input"
-          onChange={(e) => handleChange("experienceYears", e.target.value)}
-          min={1}
+          onChange={(e) =>
+            handleChange("experienceYears", parseInt(e.target.value))
+          }
         />
       </div>
 

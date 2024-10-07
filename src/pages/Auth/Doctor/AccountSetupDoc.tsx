@@ -6,8 +6,10 @@ import { docPrimaryPracticeLocationValidator } from "../../../utility/onboarding
 import OnboardingProgressDoc from "../../../components/OnboardingProgressDoc";
 import DocAccSetupForm from "../../../components/Forms/DocAccSetupForm";
 import DocAvailabilityForm from "../../../components/Forms/DocAvailabilityForm";
+import { contextData } from "../../../context/AuthContext";
 
 export default function AccountSetupDoc() {
+  const { setProfile } = contextData();
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     availability: [
@@ -16,7 +18,7 @@ export default function AccountSetupDoc() {
         startTime: "",
         endTime: "",
         allDay: false,
-      }
+      },
     ],
     primaryPracticeLocation: {
       hospital: "",
@@ -24,7 +26,6 @@ export default function AccountSetupDoc() {
       position: "",
       startDate: "",
     },
-    allDays: false, // Assuming the doctor is not available all days
   });
 
   const [error, setError] = useState<any>(null);
@@ -47,15 +48,33 @@ export default function AccountSetupDoc() {
   //Complete Registration Form Submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-     navigate("/dashboard/partner/doctor");
+    setError(null);
+
+    const validAvailability = formValues.availability.filter(
+      (schedule: any) =>
+        schedule.allDay ||
+        (schedule.startTime.length === 5 && schedule.endTime.length === 5),
+    );
+
+    if (validAvailability.length === 0) {
+      return setError("Please add valid availability before submitting.");
+    }
 
     try {
       setLoading(true);
-      const response = await sendRequest("/profile", "PUT", FormData);
-      if (response.ok) return navigate("/dashboard/partner/doctor");
+
+      console.log(validAvailability);
+
+      const res = await sendRequest(
+        "/doctors/profile/complete-account-setup",
+        "POST",
+        {...formValues, availability: validAvailability},
+      );
+
+      setProfile(res.data);
+
+      return navigate("/dashboard/partner/doctor");
     } catch (error: any) {
-      if (error.message === "Profile already completed")
-        return navigate("/dashboard/partner/doctor");
       setError(error.message);
     } finally {
       setLoading(false);

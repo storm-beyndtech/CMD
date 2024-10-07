@@ -9,6 +9,7 @@ export default function DocSpecialtyForm2({
   isLoading,
   error,
   setFormValues,
+  handleChange
 }: any) {
   const { identificationNumber } = formValues;
   const [selectedFiles, setSelectedFiles] = useState<Array<string | null>>([
@@ -16,6 +17,12 @@ export default function DocSpecialtyForm2({
     null,
     null,
   ]);
+
+  const socials = [
+    { placeholder: "LinkedIn Profile", id: "linkedin" },
+    { placeholder: "Twitter Profile", id: "twitter" },
+    { placeholder: "Personal Website", id: "website" },
+  ];
 
   const handleFileChange = (e: any, index: number) => {
     const file = e.target.files[0];
@@ -86,13 +93,16 @@ export default function DocSpecialtyForm2({
         <label className="block text-gray-700 text-sm font-medium mb-2">
           Social Links (Optional)
         </label>
-        {["LinkedIn Profile", "Twitter Profile", "Personal Website"].map(
-          (placeholder, i) => (
+        {socials.map(
+          ({id, placeholder}, i) => (
             <input
               key={i}
               type="text"
               placeholder={placeholder}
               className="input mb-2"
+              onChange={(e) =>
+                handleChange(id, e.target.value)
+              }
             />
           ),
         )}
@@ -100,7 +110,7 @@ export default function DocSpecialtyForm2({
       {/* Error Message */}
       {error && <Alert type="danger" message={error} />}
       {/* Submit Button */}
-      <div className="text-center my-8">
+      <div className="text-center my-3">
         <Btn
           label="Submit"
           type="primary"

@@ -37,7 +37,13 @@ export default function InputField({
             value={value}
             onChange={(e) => onChange(e)}
             type={
-              id === "email" ? "email" : id === "dateOfBirth" ? "date" : "text"
+              id === "email"
+                ? "email"
+                : id === "dateOfBirth"
+                ? "date"
+                : id === "experienceYears"
+                ? "number"
+                : "text"
             }
             className="input z-[3]"
             placeholder={placeholder}
@@ -65,7 +71,9 @@ export default function InputField({
             placeholder={placeholder}
             required={required}
             id={id}
-            maxLength={id === "cardExpiration" ? 5 : id === "cvc" ? 3 : undefined}
+            maxLength={
+              id === "cardExpiration" ? 5 : id === "cvc" ? 3 : undefined
+            }
             pattern={
               id === "cardExpiration"
                 ? "^(0[1-9]|1[0-2])/?([0-9]{2})$"
@@ -163,7 +171,8 @@ export default function InputField({
           <p className="text-[#383E49] leading-6 -mt-1">
             {page === "payment" ? (
               <>
-                By proceeding with your purchase, you accept our <br className="max-sm:hidden"/>
+                By proceeding with your purchase, you accept our{" "}
+                <br className="max-sm:hidden" />
                 <Link to="/terms" className="text-secondary3 font-medium">
                   Terms and Conditions
                 </Link>{" "}
@@ -171,7 +180,8 @@ export default function InputField({
             ) : (
               <>
                 {" "}
-                By proceeding with your account, you accept the <br className="max-sm:hidden"/>
+                By proceeding with your account, you accept the{" "}
+                <br className="max-sm:hidden" />
                 <Link to="/terms" className="text-secondary3 font-medium">
                   Terms and Conditions
                 </Link>{" "}
@@ -209,7 +219,10 @@ export default function InputField({
             className="input !text-lg"
           >
             {fieldOptions?.map((option, i) => (
-              <option key={i} value={id === "country" ? option.name : option.value}>
+              <option
+                key={i}
+                value={id === "country" ? option.name : option.value}
+              >
                 {option.name}
               </option>
             ))}

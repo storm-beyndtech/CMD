@@ -2,17 +2,15 @@ import { useEffect, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa6";
 import upgradeImg from "../../assets/upgrade.svg";
-import { navItems } from "../../lib/dashboardUtils";
+import { NavItems } from "../../types/types";
 
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
+  navItems: NavItems[]
 }
 
-interface SidelinkProps {
-  to: string;
-  label: string;
-  icons: { default: string; active: string };
+interface SidelinkProps extends NavItems{
   isActive: boolean;
 }
 
@@ -32,7 +30,11 @@ const SidebarLink = ({ to, label, icons, isActive }: SidelinkProps) => (
   </NavLink>
 );
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+export default function PatientSidebar({
+  sidebarOpen,
+  setSidebarOpen,
+  navItems,
+}: SidebarProps) {
   const { pathname } = useLocation();
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
@@ -112,6 +114,4 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       </aside>
     </div>
   );
-};
-
-export default Sidebar;
+}

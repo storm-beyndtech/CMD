@@ -22,7 +22,7 @@ export default function PatientsInCare({ patient }: any) {
           </p>
 
           <Link
-            to={`/dashboard/partner/doctor/consultations/patient-in-care/${patient.id}`}
+            to={`/dashboard/partner/doctor/consultation/${patient.id}`}
             className="text-secondary text-sm font-semibold"
           >
             Go to Patient →

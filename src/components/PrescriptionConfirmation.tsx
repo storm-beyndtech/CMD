@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import PrescriptionCard from "./PrescriptionCard";
 import { Prescription } from "../types/types";
 import Btn from "./UI/Btn";
@@ -12,27 +12,27 @@ const PrescriptionConfirmation: React.FC<PrescriptionConfirmationProps> = ({
   prescriptions,
   goBack,
 }) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 2; // You can change this to display more items per page
+  const prescriptionWrapperRef = useRef<HTMLDivElement>(null);
 
-  const handleNextPage = () => {
-    if (currentPage < Math.ceil(prescriptions.length / itemsPerPage) - 1) {
-      setCurrentPage(currentPage + 1);
+  // Function to slide back (scroll to the left)
+  const handleSlideBack = () => {
+    if (prescriptionWrapperRef.current) {
+      prescriptionWrapperRef.current.scrollBy({
+        left: -300, // Adjust this value depending on your card width
+        behavior: "smooth", // Smooth scrolling
+      });
     }
   };
 
-  const handlePreviousPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
+  // Function to slide forward (scroll to the right)
+  const handleSlideFront = () => {
+    if (prescriptionWrapperRef.current) {
+      prescriptionWrapperRef.current.scrollBy({
+        left: 300, // Adjust this value depending on your card width
+        behavior: "smooth", // Smooth scrolling
+      });
     }
   };
-
-  // Calculate which prescriptions to show on the current page
-  const startIndex = currentPage * itemsPerPage;
-  const selectedPrescriptions = prescriptions.slice(
-    startIndex,
-    startIndex + itemsPerPage,
-  );
 
   return (
     <div className="">
@@ -41,34 +41,27 @@ const PrescriptionConfirmation: React.FC<PrescriptionConfirmationProps> = ({
         details.
       </p>
 
-      <div className="flex justify-center gap-6">
-        {/* Render the current page of prescription cards */}
-        {selectedPrescriptions.map((prescription, index) => (
-          <PrescriptionCard key={index} prescription={prescription} />
+      {/* Wrapper with scroll */}
+      <div
+        className="w-full flex gap-6 overflow-x-scroll no-scrollbar my-5"
+        ref={prescriptionWrapperRef} // Reference to the wrapper
+      >
+        {prescriptions.map((prescription, i) => (
+          <PrescriptionCard key={i} prescription={prescription} />
         ))}
       </div>
 
-      {/* Pagination controls */}
+      {/* Slide controls */}
       <div className="flex justify-end mt-6 space-x-4 pr-3">
         <button
-          onClick={handlePreviousPage}
-          className={`border border-gray-200 px-3 py-2 rounded-xl text-2xl ${
-            currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={currentPage === 0}
+          onClick={handleSlideBack}
+          className="border border-gray-200 px-3 py-2 rounded-xl text-2xl"
         >
           ←
         </button>
         <button
-          onClick={handleNextPage}
-          className={`border border-gray-200 px-3 py-2 rounded-xl text-2xl ${
-            currentPage === Math.ceil(prescriptions.length / itemsPerPage) - 1
-              ? "opacity-50 cursor-not-allowed"
-              : ""
-          }`}
-          disabled={
-            currentPage === Math.ceil(prescriptions.length / itemsPerPage) - 1
-          }
+          onClick={handleSlideFront}
+          className="border border-gray-200 px-3 py-2 rounded-xl text-2xl"
         >
           →
         </button>

@@ -2,27 +2,27 @@ import { useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import PartnerSidebar from "./PartnerSideBar";
 import PartnerHeader from "./PartnerHeader";
-import { navItemsPatient } from "../../lib/dashboardUtils";
+import { navItemsDoctor } from "../../lib/dashboardUtils";
 import { contextData } from "../../context/AuthContext";
 import PageLoader from "../PageLoader";
 
-export default function PatientLayout() {
+export default function DocLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, profile, fetching } = contextData(); // Fetch profile from context
 
   // Show loading while fetching user or profile data
   if (fetching) return <PageLoader />;
 
-  if (profile && user.accountType === "member") {
-    if (!profile.isCompletedProfile) {
-      return <Navigate to="/auth/patient/update-profile" replace />;
+  if (user.partnerType === "doctor" && profile) {
+    if (!profile.isRegistrationComplete) {
+      return <Navigate to="/auth/partner/doctor/complete-reg" replace />;
     }
 
-    if (!profile.isHRABooked) {
-      return <Navigate to="/auth/patient/HRA" replace />;
+    if (!profile.isAccountSetupComplete) {
+      return <Navigate to="/auth/partner/doctor/account-setup" replace />;
     }
   } else {
-    return <Navigate to="/auth/patient/update-profile" replace />;
+    return <Navigate to="/auth/partner/doctor/complete-reg" replace />;
   }
 
   return (
@@ -39,7 +39,7 @@ export default function PatientLayout() {
         <PartnerSidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
-          navItems={navItemsPatient}
+          navItems={navItemsDoctor}
         />
 
         {/* Scrollable Main content */}

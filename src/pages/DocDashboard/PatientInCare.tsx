@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ConsultationDetails from "../../components/ConsultationDetails";
 import { docConsultations } from "../../lib/dashboardUtils";
 import { FiArrowLeft } from "react-icons/fi";
 import dayjs from "dayjs";
+import PageLoader from "../../components/PageLoader";
 
 const consultations = docConsultations;
 
 export default function PatientInCare() {
+  const navigate = useNavigate()
   const { id } = useParams(); // Extract 'id' from the URL params
   const [consultation, setConsultation] = useState<any>(null);
 
@@ -21,14 +23,18 @@ export default function PatientInCare() {
   }, [id]);
 
   if (!consultation) {
-    return <div>Loading...</div>;
+    return <PageLoader />;
   }
+
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   return (
     <div className="w-full grid gap-5">
       {/* Back Button */}
-      <div className="flex items-start gap-2 mb-3">
-        <FiArrowLeft className="text-gray-500 pt-1.5 text-2xl" />
+      <div className="flex items-start gap-2 mb-3 cursor-pointer">
+        <FiArrowLeft className="text-gray-500 pt-1.5 text-2xl" onClick={handleBack}/>
         <div className="flex flex-col items-center justify-start ">
           <h3 className="text-lg font-semibold flex items-center justify-start gap-3">
             Consultation with {consultation.patientName}

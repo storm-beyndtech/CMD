@@ -1,16 +1,15 @@
 import { useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { navItemsDoctors } from "../../lib/dashboardUtils";
+import { NavItems } from "../../types/types";
+
 
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
+  navItems: NavItems[]
 }
 
-interface SidelinkProps {
-  to: string;
-  label: string;
-  icons: { default: string; active: string };
+interface SidelinkProps extends NavItems{
   isActive: boolean;
 }
 
@@ -30,7 +29,7 @@ const SidebarLink = ({ to, label, icons, isActive }: SidelinkProps) => (
   </NavLink>
 );
 
-const PartnerSidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+const PartnerSidebar = ({ sidebarOpen, setSidebarOpen, navItems }: SidebarProps) => {
   const { pathname } = useLocation();
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
@@ -80,7 +79,7 @@ const PartnerSidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <div className="h-full no-scrollbar flex flex-col justify-between overflow-y-auto">
           <nav className="py-4">
             <ul className="flex flex-col">
-              {navItemsDoctors.map(({ to, label, icons }) => (
+              {navItems.map(({ to, label, icons }) => (
                 <SidebarLink
                   key={to}
                   to={to}

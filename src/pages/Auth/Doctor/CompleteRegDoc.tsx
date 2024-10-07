@@ -5,92 +5,160 @@ import { sendRequest } from "../../../utility/sendRequest";
 import DocSpecialtyForm from "../../../components/Forms/DocSpecialtyForm";
 import { docSpecialtyValidatorV1 } from "../../../utility/onboardingValidators";
 import DocSpecialtyForm2 from "../../../components/Forms/DocSpecialtyForm2";
+import omit from "lodash/omit";
+import { contextData } from "../../../context/AuthContext";
+
+// Define the form values type
+interface FormValues {
+  specialities: string[];
+  medicalLicenseNumber: string;
+  experienceYears: number;
+  inPersonConsultation: boolean;
+  virtualConsultation: boolean;
+  practiceLocations: { hospital: string; location: string[] | any }[];
+  consultationAvailability: string[];
+  identificationNumber: string;
+  linkedin: string;
+  twitter: string;
+  website: string;
+}
 
 export default function CompleteRegDoc() {
+  const { setProfile, profile } = contextData();
   const navigate = useNavigate();
-  const [formValues, setFormValues] = useState({
-    specialities: [],
-    medicalLicenseNumber: "",
-    experienceYears: "",
-    inPersonConsultation: false,
-    virtualConsultation: false,
-    practiceLocations: [],
-    consultationAvailability: ["online"],
-    identificationNumber: "",
-    linkedin: "",
-    twitter: "",
-    facebook: "",
-    instagram: "",
+
+  // Initialize formValues with default data or empty values
+  const [formValues, setFormValues] = useState<FormValues>({
+    specialities: profile?.specialities || [],
+    medicalLicenseNumber: profile?.medicalLicenseNumber || "",
+    experienceYears: profile?.experienceYears || 0,
+    inPersonConsultation:
+      profile?.consultationAvailability?.includes("in-person") || false,
+    virtualConsultation:
+      profile?.consultationAvailability?.includes("online") || false,
+    practiceLocations: profile?.practiceLocations || [],
+    consultationAvailability: profile?.consultationAvailability || [],
+    identificationNumber: profile?.identificationNumber || "",
+    linkedin: profile?.socialLinks?.linkedin || "",
+    twitter: profile?.socialLinks?.twitter || "",
+    website: profile?.socialLinks?.twitter || "",
   });
 
-  const [error, setError] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showSpecialtyForm2, setShowSpecialtyForm2] = useState(false);
 
   const handleChange = (id: string, e: any) => {
-    if (id === "inPersonConsultation")
-      setFormValues({
-        ...formValues,
-        inPersonConsultation: !formValues.inPersonConsultation,
-      });
-    if (id === "virtualConsultation")
-      setFormValues({
-        ...formValues,
-        virtualConsultation: !formValues.virtualConsultation,
-      });
-
-    setFormValues({ ...formValues, [id]: e });
+    if (id === "inPersonConsultation") {
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        inPersonConsultation: !prevValues.inPersonConsultation,
+      }));
+    } else if (id === "virtualConsultation") {
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        virtualConsultation: !prevValues.virtualConsultation,
+      }));
+    } else {
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        [id]: e,
+      }));
+    }
   };
 
   const handleSubmit1 = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    const { inPersonConsultation, virtualConsultation } = formValues;
+    const inPerson = formValues.inPersonConsultation;
+    const virtual = formValues.virtualConsultation;
     const consultationAvailability =
-      inPersonConsultation && virtualConsultation
+      inPerson && virtual
         ? ["in-person", "online"]
-        : inPersonConsultation && !virtualConsultation
+        : inPerson && !virtual
         ? ["in-person"]
-        : !inPersonConsultation && virtualConsultation
+        : !inPerson && virtual
         ? ["online"]
         : [];
 
-    setFormValues({
+    const updatedValues = {
       ...formValues,
       consultationAvailability,
-    });
+      identificationNumber: "DSRRSET",
+    };
 
-    const isValid = docSpecialtyValidatorV1({
-      ...formValues,
-      consultationAvailability,
-    });
+    const isValid = docSpecialtyValidatorV1(updatedValues);
     if (isValid === true) {
-      setShowSpecialtyForm2(true);
+      const dataToSend = omit(updatedValues, [
+        "website",
+        "linkedin",
+        "twitter",
+        "inPersonConsultation",
+        "virtualConsultation",
+      ]);
+
+      try {
+        setLoading(true);
+        const res = await sendRequest(
+          "/doctors/profile/continue-registration",
+          "POST",
+          dataToSend
+        );
+
+        setProfile(res.data);
+        setShowSpecialtyForm2(true);
+      } catch (error: any) {
+        setError(error.message);
+        if (error.message === "Doctor onboarding already completed") {
+          setTimeout(() => {
+            setShowSpecialtyForm2(true);
+            setError(null);
+          }, 2000);
+        }
+      } finally {
+        setLoading(false);
+      }
     } else {
       setError(isValid);
     }
   };
 
-  //Complete Registration Form Submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
 
     try {
       setLoading(true);
-      await sendRequest(
-        "/doctor/profile/continue-registration",
+      const dataToSend = omit(formValues, [
+        "website",
+        "specialities",
+        "medicalLicenseNumber",
+        "experienceYears",
+        "inPersonConsultation",
+        "virtualConsultation",
+        "practiceLocations",
+        "consultationAvailability",
+      ]);
+
+      const res = await sendRequest(
+        "/doctors/profile/complete-registration",
         "POST",
-        FormData,
+        dataToSend
       );
+
+      setProfile(res.data);
       return navigate("/dashboard/partner/doctor");
     } catch (error: any) {
-      if (error.message === "Profile already completed")
-        return navigate("/dashboard/partner/doctor");
       setError(error.message);
+      if (error.message === "Profile already completed") {
+        setTimeout(() => {
+          setError(null);
+          return navigate("/dashboard/partner/doctor");
+        }, 2000);
+      }
     } finally {
       setLoading(false);
-      navigate("/auth/partner/doctor/account-setup")
     }
   };
 

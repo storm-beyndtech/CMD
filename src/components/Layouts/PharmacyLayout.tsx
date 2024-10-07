@@ -2,14 +2,18 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import PartnerSidebar from "./PartnerSideBar";
 import PartnerHeader from "./PartnerHeader";
+import { navItemsPharmacy } from "../../lib/dashboardUtils";
 
-export default function PartnerLayout() {
+export default function PharmacyLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="w-full h-screen flex bg-primary">
       {/* Fixed Header */}
-      <PartnerHeader sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <PartnerHeader
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
 
       {/* Layout container */}
       <div className="max-ctn !max-w-[1150px] flex flex-1">
@@ -17,6 +21,7 @@ export default function PartnerLayout() {
         <PartnerSidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
+          navItems={navItemsPharmacy}
         />
 
         {/* Scrollable Main content */}

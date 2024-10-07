@@ -9,7 +9,7 @@ interface propData {
   setSidebarOpen: (arg0: boolean) => void;
 }
 
-export default function Header({ sidebarOpen, setSidebarOpen }: propData) {
+export default function PatientHeader({ sidebarOpen, setSidebarOpen }: propData) {
   console.log(sidebarOpen, setSidebarOpen);
 
   return (

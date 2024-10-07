@@ -1,5 +1,13 @@
 import { ChangeEvent } from "react";
 
+
+export interface NavItems {
+  to: string;
+  label: string;
+  icons: { default: string; active: string };
+}
+
+
 export type SecData = {
   title: string;
   desc: string;
@@ -95,6 +103,8 @@ export interface Consultation {
   tests: TestResult;
   uploads: string[]; // Array for file uploads
   prescriptions: Prescription[];
+  patientDetails?: any;
+  testType: string
 }
 
 // Type for Doctor's Notes
