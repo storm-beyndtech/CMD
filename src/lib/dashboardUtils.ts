@@ -299,7 +299,7 @@ export const consultations = [
         drug: {
           id: "3",
           price: 300,
-          imageUrl: "tadafil_image_url",
+          imageUrl: Tadafil,
           name: "Tadafil",
           strength: "5mg/10mg",
         },
@@ -311,7 +311,7 @@ export const consultations = [
         drug: {
           id: "1",
           price: 250,
-          imageUrl: "finasteride_image_url",
+          imageUrl: Apixaban,
           name: "Atorvastatin",
           strength: "5mg",
         },
@@ -362,7 +362,7 @@ export const consultations = [
         drug: {
           id: "3",
           price: 300,
-          imageUrl: "tadafil_image_url",
+          imageUrl: Tadafil,
           name: "Tadafil",
           strength: "5mg/10mg",
         },
@@ -374,7 +374,7 @@ export const consultations = [
         drug: {
           id: "1",
           price: 250,
-          imageUrl: "finasteride_image_url",
+          imageUrl: Apixaban,
           name: "Atorvastatin",
           strength: "5mg",
         },
@@ -425,7 +425,7 @@ export const consultations = [
         drug: {
           id: "3",
           price: 300,
-          imageUrl: "tadafil_image_url",
+          imageUrl: Tadafil,
           name: "Tadafil",
           strength: "5mg/10mg",
         },
@@ -437,7 +437,7 @@ export const consultations = [
         drug: {
           id: "1",
           price: 250,
-          imageUrl: "finasteride_image_url",
+          imageUrl: Apixaban,
           name: "Atorvastatin",
           strength: "5mg",
         },
