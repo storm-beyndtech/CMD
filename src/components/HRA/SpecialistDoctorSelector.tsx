@@ -46,7 +46,10 @@ const SpecialistDoctorSelector: React.FC<SpecialistDoctorSelectorProps> = ({
           <option value="">Select Specialist</option>
           <option value="Cardiologist">Cardiologist</option>
           <option value="Dermatologist">Dermatologist</option>
-          {/* Add other specialties */}
+          <option value="Pediatrician">Pediatrician</option>
+          <option value="Neonatal Consultant">Neonatal Consultant</option>
+          <option value="Oncologist">Oncologist</option>
+          <option value="Otolaryngologist">Otolaryngologist</option>
         </select>
       </div>
 

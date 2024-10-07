@@ -3,8 +3,11 @@ import logo from "../../../assets/logo.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { sendRequest } from "../../../utility/sendRequest";
 import PharmacyCompleteRegForm from "../../../components/Forms/PharmacyCompleteRegForm";
+import { labAndPharmacyUpdateValidator } from "../../../utility/onboardingValidators";
+import { contextData } from "../../../context/AuthContext";
 
 export default function CompletePharmacyReg() {
+  const { setProfile } = contextData();
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     name: "",
@@ -14,7 +17,7 @@ export default function CompletePharmacyReg() {
       address: "",
       city: "",
       state: "",
-      country: "",
+      country: "Nigeria",
       zipCode: "",
     },
     contact: {
@@ -68,29 +71,27 @@ export default function CompletePharmacyReg() {
 
 
 
-  // Complete Registration Form Submit
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
+	// Complete Registration Form Submit
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setError(null);
 
-    return console.log(formValues)
+		const isValid = labAndPharmacyUpdateValidator(formValues);
+    if (!isValid) return setError(isValid);
 
-    try {
-      setLoading(true);
-      await sendRequest(
-        "/doctor/profile/continue-registration",
-        "POST",
-        formValues,
-      );
-      return navigate("/dashboard/partner/doctor");
-    } catch (error: any) {
-      if (error.message === "Profile already completed")
-        return navigate("/dashboard/partner/doctor");
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const { isPrimaryAddress, ...requestData } = formValues
+    
+		try {
+			setLoading(true);
+      const res = await sendRequest("/pharmacy/profile/complete-registration", "POST", requestData);
+      setProfile(res.data);
+			return navigate("/dashboard/partner/pharmacy");
+		} catch (error: any) {
+			setError(error.message);
+		} finally {
+			setLoading(false);
+		}
+	};
 
   return (
     <div className="w-full min-h-screen bg-primary pb-10 px-5">

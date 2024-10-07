@@ -41,6 +41,9 @@ import AppointmentDetails from "./pages/LabDashboard/AppointmentDetails";
 import LabProfile from "./pages/LabDashboard/LabProfile";
 import LabAppointments from "./pages/LabDashboard/LabAppointments";
 import NewLabAppointments from "./pages/LabDashboard/NewLabAppointments";
+import PharmacyOrders from "./pages/PharmacyDashboard/PharmacyOrders";
+import PharmacyInventory from "./pages/PharmacyDashboard/PharmacyInventory";
+import PharmacyProfile from "./pages/PharmacyDashboard/PharmacyProfile";
 
 // Main App Component
 export default function App() {
@@ -118,7 +121,10 @@ export default function App() {
 					</PrivateRoute>
 				}
 			>
-				<Route index element={<PharmacyHome />} />
+        <Route index element={<PharmacyHome />} />
+        <Route path="/dashboard/partner/pharmacy/orders" element={<PharmacyOrders />} />
+        <Route path="/dashboard/partner/pharmacy/inventory" element={<PharmacyInventory />} />
+        <Route path="/dashboard/partner/pharmacy/profile" element={<PharmacyProfile />} />
 			</Route>
 
 			{/*    --    --   --   --  */}

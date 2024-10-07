@@ -17,7 +17,7 @@ export default function CompleteLabReg() {
 			address: "",
 			city: "",
 			state: "",
-			country: "",
+			country: "Nigeria",
 			zipCode: "",
 		},
 		contact: {

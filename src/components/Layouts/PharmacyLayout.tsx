@@ -1,11 +1,26 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import PartnerSidebar from "./PartnerSideBar";
 import PartnerHeader from "./PartnerHeader";
 import { navItemsPharmacy } from "../../lib/dashboardUtils";
+import { contextData } from "../../context/AuthContext";
+import PageLoader from "../PageLoader";
 
 export default function PharmacyLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { profile, fetching } = contextData();
+
+	// Show loading while fetching user or profile data
+	if (fetching) return <PageLoader />;
+
+	if (profile) {
+		if (!profile.isRegistrationComplete) {
+			return <Navigate to="/auth/partner/pharmacy/complete-reg" replace />;
+		}
+  } else {
+    return <Navigate to="/auth/partner/pharmacy/complete-reg" replace />;
+  }
+
 
   return (
     <div className="w-full h-screen flex bg-primary">
