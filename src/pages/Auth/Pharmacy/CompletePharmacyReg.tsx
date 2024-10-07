@@ -7,7 +7,7 @@ import { labAndPharmacyUpdateValidator } from "../../../utility/onboardingValida
 import { contextData } from "../../../context/AuthContext";
 
 export default function CompletePharmacyReg() {
-  const { setProfile } = contextData();
+  const { setProfile, fetchUser, token } = contextData();
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     name: "",
@@ -85,6 +85,7 @@ export default function CompletePharmacyReg() {
 			setLoading(true);
       const res = await sendRequest("/pharmacy/profile/complete-registration", "POST", requestData);
       setProfile(res.data);
+      fetchUser(token)
 			return navigate("/dashboard/partner/pharmacy");
 		} catch (error: any) {
 			setError(error.message);

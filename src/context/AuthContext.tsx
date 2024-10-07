@@ -7,6 +7,7 @@ interface AuthContextProps {
   token: string | null;
   fetching: boolean;
   login: (userData: any) => Promise<void>;
+  fetchUser: (token: any) => Promise<void>;
   logout: () => void;
   setProfile: React.Dispatch<React.SetStateAction<any>>;
 }
@@ -132,7 +133,8 @@ export const AuthProvider = ({ children }: any) => {
         fetching,
         login,
         logout,
-        setProfile
+        setProfile,
+        fetchUser
       }}
     >
       {children}
