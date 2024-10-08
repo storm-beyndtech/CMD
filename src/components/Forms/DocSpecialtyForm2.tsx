@@ -1,7 +1,7 @@
-import { useState } from "react";
 import Alert from "../UI/Alert";
 import Btn from "../UI/Btn";
 import { IoMdAddCircle } from "react-icons/io";
+import { sendRequest } from "../../utility/sendRequest";
 
 export default function DocSpecialtyForm2({
   onSubmit,
@@ -12,11 +12,6 @@ export default function DocSpecialtyForm2({
   handleChange
 }: any) {
   const { identificationNumber } = formValues;
-  const [selectedFiles, setSelectedFiles] = useState<Array<string | null>>([
-    null,
-    null,
-    null,
-  ]);
 
   const socials = [
     { placeholder: "LinkedIn Profile", id: "linkedin" },
@@ -24,14 +19,36 @@ export default function DocSpecialtyForm2({
     { placeholder: "Personal Website", id: "website" },
   ];
 
-  const handleFileChange = (e: any, index: number) => {
+
+  const handleFileChange = (e: any, title: string) => {
     const file = e.target.files[0];
-    if (file) {
-      const updatedFiles = [...selectedFiles];
-      updatedFiles[index] = file.name; // Save the file name in state
-      setSelectedFiles(updatedFiles);
+    if (title === "Medical License (Front)") {
+      handleDocUpload(file, "medicalLicenseFront");
+    } else if (title === "Medical License (Back)") {
+      handleDocUpload(file, "medicalLicenseBack");
+    } else if (title === "Resume") { 
+      handleDocUpload(file, "resume");
     }
   };
+
+  
+  const handleDocUpload = async (file: any, docTitle:string) => {
+    if (!file) return alert("Invalid file selected");
+
+    const formData = new FormData();
+    formData.append("documentTitle", docTitle);
+    formData.append("file", file);
+
+
+    try {
+      await sendRequest("/doctors/profile/upload", "POST", formData);
+      alert(`${docTitle} updated successfully`);
+    } catch (error: any) {
+      console.error(error.message);
+      alert(`Failed to upload ${docTitle}:  ${error.message}`);
+    }
+  };
+
 
   return (
     <form
@@ -71,14 +88,14 @@ export default function DocSpecialtyForm2({
                 className="hidden"
                 id={`file-input-${i}`}
                 accept=".pdf,.jpg,.png"
-                onChange={(e) => handleFileChange(e, i)}
+                onChange={(e) => handleFileChange(e, label)}
               />
               <label
                 htmlFor={`file-input-${i}`}
                 className="text-secondary3 font-medium cursor-pointer flex items-center gap-2 border border-secondary3 p-3 w-fit rounded-xl mx-auto mb-4"
               >
                 <IoMdAddCircle />{" "}
-                {selectedFiles[i] ? selectedFiles[i] : "Choose Files"}
+                Choose File
               </label>
               <p className="text-sm text-gray-500">
                 Upload pdf, jpg, and png formats <br />

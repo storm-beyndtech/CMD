@@ -26,16 +26,17 @@ export type Features = {
 export interface InputFieldProps {
   label?: string;
   value?: string | number;
-  onChange: (value: ChangeEvent) => void;
+  onChange?: (value: ChangeEvent) => void;
   type?: string;
   placeholder?: string;
   required?: boolean;
   min?: number;
   max?: number;
-  id: string;
+  id?: string;
   checked?: boolean;
   fieldOptions?: { name: string; value?: string }[];
   page?: string;
+  disabled?: boolean
 }
 
 export interface FormSectionProps {
@@ -63,15 +64,6 @@ export interface TestResult {
   allergy: string;
 }
 
-// type Doctor = {
-//   id: string;
-//   img: string; // Assuming the image is a URL or a string reference to an image
-//   name: string;
-//   position: string;
-//   hospitals: string;
-//   availableDates: string[]; // Array of dates in string format
-// };
-
 export type Drug = {
   id: string;
   name: string;
@@ -89,28 +81,38 @@ export interface Prescription {
   drug: Drug
 }
 
+export interface NoteOrResultDocFiles{
+  title: string;
+  url: string;
+  publicId: string;
+  _id: string
+}
+
+
 // Type for a single consultation
 export interface Consultation {
-  id: string;
-  date: string;
+  _id: string;
   type: string;
   status: string;
-  partner: string;
   notes: string;
-  documents: string[];
+  documents: NoteOrResultDocFiles[];
   lastVisit: string;
   remarks: string;
   tests: TestResult;
-  uploads: string[]; // Array for file uploads
+  uploads: NoteOrResultDocFiles[]; // Array for file uploads
   prescriptions: Prescription[];
   patientDetails?: any;
-  testType: string
+  dateTime?: any;
+  testType: string;
+  doctor?: any;
+  doctorNotes?: string;
+  results?: any;
 }
 
 // Type for Doctor's Notes
 export interface DoctorsNotesProps {
-  notes: string;
-  documents: string[]; // Array of document image URLs
+  doctorNotes: string;
+  documents: NoteOrResultDocFiles[]; // Array of document image URLs
   isDoctor?: boolean;
 }
 
@@ -119,7 +121,7 @@ export interface LabResultsProps {
   lastVisit: string;
   remarks: string;
   tests: TestResult;
-  uploads: string[];
+  uploads: NoteOrResultDocFiles[];
 }
 
 // Type for Prescriptions

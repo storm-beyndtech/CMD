@@ -81,7 +81,7 @@ export default function PatientAuth() {
 					if (!res.data.user.partnerType) navigate("/auth/partner/accountType");
 					if (res.data.user.partnerType) navigate(`/dashboard/partner/${res.data.user.partnerType}`);
 				} else {
-					navigate("/auth/patient/update-profile");
+					navigate("/dashboard/patient");
 				}
 			}
 		} catch (error: any) {

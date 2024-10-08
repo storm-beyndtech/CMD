@@ -22,7 +22,7 @@ export default function AccountType() {
 
   const submitAccountType = async () => {
     if (accountType === "Doctor") {
-      navigate("/dashboard/partner/doctor/")
+      navigate("/auth/partner/doctor/complete-reg")
     }
     if (accountType === "Lab") {
       navigate("/dashboard/partner/lab/")

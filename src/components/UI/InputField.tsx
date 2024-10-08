@@ -19,6 +19,7 @@ export default function InputField({
   checked,
   fieldOptions,
   page,
+  disabled,
 }: InputFieldProps) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -35,7 +36,7 @@ export default function InputField({
           {label}
           <input
             value={value}
-            onChange={(e) => onChange(e)}
+            onChange={onChange ? (e) => onChange(e) : undefined}
             type={
               id === "email"
                 ? "email"
@@ -45,6 +46,36 @@ export default function InputField({
                 ? "number"
                 : "text"
             }
+            disabled={disabled ? disabled : false}
+            className="input z-[3]"
+            placeholder={placeholder}
+            required={required}
+            id={id}
+          />
+
+          {id === "dateOfBirth" && (
+            <span className="absolute right-3 top-[50%] z-[1] translate-y-2 cursor-pointer">
+              <img src={calendar} alt="calendar-icon" />
+            </span>
+          )}
+        </label>
+      );
+    case "profile":
+      return (
+        <label className="label relative">
+          {label}
+          <input
+            value={value}
+            type={
+              id === "email"
+                ? "email"
+                : id === "dateOfBirth"
+                ? "date"
+                : id === "experienceYears"
+                ? "number"
+                : "text"
+            }
+            disabled={disabled ? disabled : false}
             className="input z-[3]"
             placeholder={placeholder}
             required={required}
@@ -65,7 +96,7 @@ export default function InputField({
         <div className="relative">
           <input
             value={value}
-            onChange={(e) => onChange(e)}
+            onChange={onChange ? (e) => onChange(e) : undefined}
             type="text"
             className="input z-[3]"
             placeholder={placeholder}
@@ -116,7 +147,7 @@ export default function InputField({
             </div>
             <input
               value={value}
-              onChange={(e) => onChange(e)}
+              onChange={onChange ? (e) => onChange(e) : undefined}
               type="tel"
               className="input !pl-[90px] relative"
               placeholder={placeholder}
@@ -135,7 +166,7 @@ export default function InputField({
           {label}
           <input
             value={value}
-            onChange={(e) => onChange(e)}
+            onChange={onChange ? (e) => onChange(e) : undefined}
             type={showPassword ? "text" : "password"}
             className="input pr-10"
             placeholder={placeholder}
@@ -162,7 +193,7 @@ export default function InputField({
         <div className="flex items-start gap-2">
           <input
             checked={checked}
-            onChange={(e) => onChange(e)}
+            onChange={onChange ? (e) => onChange(e) : undefined}
             type="checkbox"
             className="w-4 h-4"
             required
@@ -198,7 +229,7 @@ export default function InputField({
         <div className="flex sm:items-center gap-2">
           <input
             checked={checked}
-            onChange={(e) => onChange(e)}
+            onChange={onChange ? (e) => onChange(e) : undefined}
             type="checkbox"
             className="w-6 h-6"
             id={id}
@@ -235,7 +266,7 @@ export default function InputField({
       return (
         <input
           value={value}
-          onChange={(e) => onChange(e)}
+          onChange={onChange ? (e) => onChange(e) : undefined}
           type="text"
           className="input"
           placeholder={placeholder}

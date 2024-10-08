@@ -10,7 +10,6 @@ interface propData {
 }
 
 export default function PatientHeader({ sidebarOpen, setSidebarOpen }: propData) {
-  console.log(sidebarOpen, setSidebarOpen);
 
   return (
     <header className="fixed top-0 left-0 z-[1000] flex w-full bg-white">

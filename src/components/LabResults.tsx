@@ -73,7 +73,7 @@ export default function LabResults({
           {uploads.map((doc, i) => (
             <img
               key={i}
-              src={doc}
+              src={doc.url}
               alt="Document"
               className="w-[125px] h-[125px] rounded-lg object-cover"
             />

@@ -7,7 +7,7 @@ import { IoIosArrowBack } from "react-icons/io";
 dayjs.extend(advancedFormat);
 
 interface CalendarComponentProps {
-  availableDates: string[];
+  availableDates: string[] | undefined;
   selectedDate: string | null;
   onDateSelect: (date: string) => void;
 }
@@ -20,11 +20,11 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
   const [currentMonth, setCurrentMonth] = useState(dayjs().startOf("month"));
 
   // Format available dates as dayjs objects
-  const availableDayjsDates = availableDates.map((date) => dayjs(date));
+  const availableDayjsDates = availableDates?.map((date) => dayjs(date));
 
   // Check if a given date is in the available dates list
   const isAvailable = (date: dayjs.Dayjs) =>
-    availableDayjsDates.some((availableDate) =>
+    availableDayjsDates?.some((availableDate) =>
       availableDate.isSame(date, "day"),
     );
 

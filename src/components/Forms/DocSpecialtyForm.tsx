@@ -10,383 +10,311 @@ import deleteIcon from "../../assets/icons/trash.svg";
 import { countries } from "../../lib/countries";
 
 const specialtyList = [
-  { name: "Select Specialty", value: "none" },
-  { name: "Cardiologist", value: "Cardiologist" },
-  { name: "Neurologist", value: "Neurologist" },
-  { name: "Dermatologist", value: "Dermatologist" },
-  { name: "Orthopedist", value: "Orthopedist" },
-  // Add more specialities here...
+	{ name: "Cardiologist", value: "Cardiologist" },
+	{ name: "Pediatrician", value: "Pediatrician" },
+	{ name: "Neonatal Consultant", value: "Neonatal Consultant" },
+	{ name: "Oncologist", value: "Oncologist" },
+	{ name: "Otolaryngologist", value: "Otolaryngologist" },
+	{ name: "Ophthalmologist", value: "Ophthalmologist" },
 ];
 
 interface Location {
-  officeName: string;
-  address: string;
-  country: string;
+	officeName: string;
+	address: string;
+	country: string;
 }
 
 export default function DocSpecialtyForm({
-  onSubmit,
-  handleChange,
-  formValues,
-  isLoading,
-  error,
-  setFormValues,
+	onSubmit,
+	handleChange,
+	formValues,
+	isLoading,
+	error,
+	setFormValues,
 }: any) {
-  const [practiceLocations, setPracticeLocations] = useState<Location[]>([]);
+	const [practiceLocations, setPracticeLocations] = useState<Location[]>([]);
 
-  const [newLocation, setNewLocation] = useState<Location>({
-    officeName: "",
-    address: "",
-    country: "Nigeria",
-  });
+	const [newLocation, setNewLocation] = useState<Location>({
+		officeName: "",
+		address: "",
+		country: "Nigeria",
+	});
 
-  const [specialities, setSpecialities] = useState<string[]>([]);
+	const [specialities, setSpecialities] = useState<string[]>([]);
 
-  useEffect(() => {
-    setPracticeLocations(
-      formValues.practiceLocations.map((location: any) => ({
-        officeName: location.hospital,
-        address: location.location[0],
-        country: "Nigeria",
-      })) || [],
-    );
+	useEffect(() => {
+		if (formValues.practiceLocations.length > 0) {
+			setPracticeLocations(
+				formValues.practiceLocations.map((loc: any) => ({
+					officeName: loc.hospital,
+					address: loc.location,
+					country: "Nigeria",
+				})) || [],
+			);
 
+			if (practiceLocations.length > 0) {
+				setNewLocation(practiceLocations[0]);
+			}
+		}
 
-
-    setNewLocation({
-      officeName:
-        formValues.practiceLocations[
-          formValues.length > 1 ? formValues.length - 1 : 0
-        ].hospital || "",
-      address:
-        formValues.practiceLocations[
-          formValues.length > 1 ? formValues.length - 1 : 0
-        ].location[0] || "",
-      country: "Nigeria",
-    });
-
-
-    setSpecialities(formValues.specialities)
+		setSpecialities(formValues.specialities);
   }, []);
+  
 
+	// Handles Adding a New Practice Location
+	const addPracticeLocation = () => {
+		if (newLocation.officeName && newLocation.address && newLocation.country) {
+			const updatedLocations = [...practiceLocations, newLocation];
 
+			setPracticeLocations(updatedLocations);
 
+			// Update parent formValues with new practice location
+			const formattedLocations = updatedLocations.map((location) => ({
+				hospital: location.officeName,
+				location: `${location.address}, ${location.country}`,
+			}));
 
-  // Handles Adding a New Practice Location
-  const addPracticeLocation = () => {
-    if (newLocation.officeName && newLocation.address && newLocation.country) {
-      const updatedLocations = [...practiceLocations, newLocation];
+			setFormValues({
+				...formValues,
+				practiceLocations: formattedLocations,
+			});
 
-      setPracticeLocations(updatedLocations);
+			// Reset the form
+			setNewLocation({ officeName: "", address: "", country: "Nigeria" });
+		}
+	};
 
-      // Update parent formValues with new practice location
-      const formattedLocations = updatedLocations.map((location) => ({
-        hospital: location.officeName,
-        location: `${location.address}, ${location.country}`,
-      }));
+	// Handles Removing a Practice Location
+	const removePracticeLocation = (index: number) => {
+		const updatedLocations = practiceLocations.filter((_, i) => i !== index);
+		setPracticeLocations(updatedLocations);
 
-      setFormValues({
-        ...formValues,
-        practiceLocations: formattedLocations,
-      });
+		// Update parent formValues after removal
+		const formattedLocations = updatedLocations.map((location) => ({
+			hospital: location.officeName,
+			location: `${location.address}, ${location.country}`,
+		}));
 
-      // Reset the form
-      setNewLocation({ officeName: "", address: "", country: "Nigeria" });
-    }
-  };
+		setFormValues({
+			...formValues,
+			practiceLocations: formattedLocations,
+		});
+	};
 
-  // Handles Removing a Practice Location
-  const removePracticeLocation = (index: number) => {
-    const updatedLocations = practiceLocations.filter((_, i) => i !== index);
-    setPracticeLocations(updatedLocations);
+	// Handles Editing a Practice Location
+	const handleEditLocation = (location: Location, index: number) => {
+		setNewLocation(location);
+		removePracticeLocation(index); // Remove it from the list to be updated
+	};
 
-    // Update parent formValues after removal
-    const formattedLocations = updatedLocations.map((location) => ({
-      hospital: location.officeName,
-      location: `${location.address}, ${location.country}`,
-    }));
+	// Handles Adding a New Specialty
+	const addSpecialty = (newSpecialty: string) => {
+		if (newSpecialty !== "none" && !specialities.includes(newSpecialty)) {
+			const updatedSpecialities = [...specialities, newSpecialty];
+			setSpecialities(updatedSpecialities);
 
-    setFormValues({
-      ...formValues,
-      practiceLocations: formattedLocations,
-    });
-  };
+			// Update parent formValues with new specialities
+			setFormValues({
+				...formValues,
+				specialities: updatedSpecialities,
+			});
+		}
+	};
 
-  // Handles Editing a Practice Location
-  const handleEditLocation = (location: Location, index: number) => {
-    setNewLocation(location);
-    removePracticeLocation(index); // Remove it from the list to be updated
-  };
+	// Handles Removing a Specialty
+	const removeSpecialty = (specialty: string) => {
+		const updatedSpecialities = specialities.filter((s) => s !== specialty);
+		setSpecialities(updatedSpecialities);
 
-  // Handles Adding a New Specialty
-  const addSpecialty = (newSpecialty: string) => {
-    if (newSpecialty !== "none" && !specialities.includes(newSpecialty)) {
-      const updatedSpecialities = [...specialities, newSpecialty];
-      setSpecialities(updatedSpecialities);
+		// Update parent formValues after removal
+		setFormValues({
+			...formValues,
+			specialities: updatedSpecialities,
+		});
+	};
 
-      // Update parent formValues with new specialities
-      setFormValues({
-        ...formValues,
-        specialities: updatedSpecialities,
-      });
-    }
-  };
+	const { medicalLicenseNumber, experienceYears, inPersonConsultation, virtualConsultation } = formValues;
 
-  // Handles Removing a Specialty
-  const removeSpecialty = (specialty: string) => {
-    const updatedSpecialities = specialities.filter((s) => s !== specialty);
-    setSpecialities(updatedSpecialities);
+	return (
+		<form
+			className="flex flex-col sm:px-8 px-4 mx-auto bg-white rounded-[14px]"
+			onSubmit={onSubmit}
+			autoComplete="off"
+		>
+			{/* Specialities Dropdown */}
+			<div>
+				<p className="font-medium text-[#48505E] mb-3">Specialty</p>
+				<div className="flex gap-3 mb-3">
+          <select id="specialty" className="input" value="" onChange={(e) => addSpecialty(e.target.value)}>
+            <option value="" disabled>Select Specialty</option>
+						{specialtyList.map((specialty, i) => (
+							<option key={i} value={specialty.value}>
+								{specialty.name}
+							</option>
+						))}
+					</select>
+				</div>
 
-    // Update parent formValues after removal
-    setFormValues({
-      ...formValues,
-      specialities: updatedSpecialities,
-    });
-  };
+				{/* List of Added Specialities */}
+				{specialities.length > 0 && (
+					<div className="flex flex-wrap gap-2 mb-4">
+						{specialities.map((specialty, index) => (
+							<div key={index} className="flex items-center bg-gray-100 px-3 py-1 rounded-md">
+								<span>{specialty}</span>
+								<IoCloseCircleSharp
+									className="ml-2 cursor-pointer text-red-600"
+									onClick={() => removeSpecialty(specialty)}
+								/>
+							</div>
+						))}
+					</div>
+				)}
+			</div>
 
-  const {
-    medicalLicenseNumber,
-    experienceYears,
-    inPersonConsultation,
-    virtualConsultation,
-  } = formValues;
+			{/* Medical License Number */}
+			<div className="pt-4">
+				<p className="font-medium text-[#48505E] mb-3">Medical License Number</p>
+				<input
+					type="text"
+					value={medicalLicenseNumber}
+					placeholder="e.g MED-1234567"
+					className="input"
+					onChange={(e) => handleChange("medicalLicenseNumber", e.target.value)}
+				/>
+			</div>
 
-  return (
-    <form
-      className="flex flex-col sm:px-8 px-4 mx-auto bg-white rounded-[14px]"
-      onSubmit={onSubmit}
-      autoComplete="off"
-    >
-      {/* Specialities Dropdown */}
-      <div>
-        <p className="font-medium text-[#48505E] mb-3">Specialty</p>
-        <div className="flex gap-3 mb-3">
-          <select
-            id="specialty"
-            className="input"
-            value=""
-            onChange={(e) => addSpecialty(e.target.value)}
-          >
-            {specialtyList.map((specialty, i) => (
-              <option key={i} value={specialty.value}>
-                {specialty.name}
-              </option>
-            ))}
-          </select>
-        </div>
+			{/* Years of Experience */}
+			<div className="pt-4">
+				<p className="font-medium text-[#48505E] mb-3">Years of Experience</p>
+				<input
+					type="number"
+					value={experienceYears}
+					placeholder="1"
+					className="input"
+					onChange={(e) => handleChange("experienceYears", parseInt(e.target.value))}
+				/>
+			</div>
 
-        {/* List of Added Specialities */}
-        {specialities.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {specialities.map((specialty, index) => (
-              <div
-                key={index}
-                className="flex items-center bg-gray-100 px-3 py-1 rounded-md"
-              >
-                <span>{specialty}</span>
-                <IoCloseCircleSharp
-                  className="ml-2 cursor-pointer text-red-600"
-                  onClick={() => removeSpecialty(specialty)}
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+			{/* Practice Locations */}
+			<div className="pt-4">
+				<p className="font-medium text-[#48505E] mb-3">Practice Location(s)</p>
 
-      {/* Medical License Number */}
-      <div className="pt-4">
-        <p className="font-medium text-[#48505E] mb-3">
-          Medical License Number
-        </p>
-        <input
-          type="text"
-          value={medicalLicenseNumber}
-          placeholder="e.g MED-1234567"
-          className="input"
-          onChange={(e) => handleChange("medicalLicenseNumber", e.target.value)}
-        />
-      </div>
+				{/* List of Practice Locations Added */}
+				{practiceLocations.length > 0 && (
+					<div className="mb-4">
+						{practiceLocations.map((location, index) => (
+							<div key={index} className="flex justify-between items-center bg-gray-100 p-3 rounded-md mb-3">
+								<div className="text-sm">
+									<p>
+										<strong>{location.officeName}</strong>
+									</p>
+									<p className="text-sm text-[#667085]">
+										{location.address}, {location.country}
+									</p>
+								</div>
 
-      {/* Years of Experience */}
-      <div className="pt-4">
-        <p className="font-medium text-[#48505E] mb-3">Years of Experience</p>
-        <input
-          type="number"
-          value={experienceYears}
-          placeholder="1"
-          className="input"
-          onChange={(e) =>
-            handleChange("experienceYears", parseInt(e.target.value))
-          }
-        />
-      </div>
+								<div className="flex space-x-3">
+									<img src={editIcon} alt="edit" onClick={() => handleEditLocation(location, index)} />
+									<img src={deleteIcon} alt="delete" onClick={() => removePracticeLocation(index)} />
+								</div>
+							</div>
+						))}
+					</div>
+				)}
 
-      {/* Practice Locations */}
-      <div className="pt-4">
-        <p className="font-medium text-[#48505E] mb-3">Practice Location(s)</p>
+				{/* Input fields for adding a new location */}
+				<div className="mb-4">
+					<input
+						type="text"
+						value={newLocation.officeName}
+						placeholder="Office Name"
+						className="input mb-3"
+						onChange={(e) => setNewLocation({ ...newLocation, officeName: e.target.value })}
+					/>
 
-        {/* List of Practice Locations Added */}
-        {practiceLocations.length > 0 && (
-          <div className="mb-4">
-            {practiceLocations.map((location, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center bg-gray-100 p-3 rounded-md mb-3"
-              >
-                <div className="text-sm">
-                  <p>
-                    <strong>{location.officeName}</strong>
-                  </p>
-                  <p className="text-sm text-[#667085]">
-                    {location.address}, {location.country}
-                  </p>
-                </div>
+					<input
+						type="text"
+						value={newLocation.address}
+						placeholder="Full Address e.g: Street and State"
+						className="input mb-3"
+						onChange={(e) => setNewLocation({ ...newLocation, address: e.target.value })}
+					/>
 
-                <div className="flex space-x-3">
-                  <img
-                    src={editIcon}
-                    alt="edit"
-                    onClick={() => handleEditLocation(location, index)}
-                  />
-                  <img
-                    src={deleteIcon}
-                    alt="delete"
-                    onClick={() => removePracticeLocation(index)}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+					<select
+						value={newLocation.country}
+						className="input mb-3"
+						onChange={(e) => setNewLocation({ ...newLocation, country: e.target.value })}
+					>
+						{countries.map((country, i) => (
+							<option key={i} value={country.name}>
+								{country.name}
+							</option>
+						))}
+					</select>
 
-        {/* Input fields for adding a new location */}
-        <div className="mb-4">
-          <input
-            type="text"
-            value={newLocation.officeName}
-            placeholder="Office Name"
-            className="input mb-3"
-            onChange={(e) =>
-              setNewLocation({ ...newLocation, officeName: e.target.value })
-            }
-          />
+					<button type="button" onClick={addPracticeLocation} className="formAdd">
+						<FiPlus size={16} />
+						Add Location
+					</button>
+				</div>
+			</div>
 
-          <input
-            type="text"
-            value={newLocation.address}
-            placeholder="Full Address e.g: Street and State"
-            className="input mb-3"
-            onChange={(e) =>
-              setNewLocation({ ...newLocation, address: e.target.value })
-            }
-          />
+			{/* Consultation Availability */}
+			<div className="pt-4">
+				<p className="text-lg font-semibold text-[#383E49]">Consultation Availability</p>
 
-          <select
-            value={newLocation.country}
-            className="input mb-3"
-            onChange={(e) =>
-              setNewLocation({ ...newLocation, country: e.target.value })
-            }
-          >
-            {countries.map((country, i) => (
-              <option key={i} value={country.name}>
-                {country.name}
-              </option>
-            ))}
-          </select>
+				<div className="grid gap-2 my-3">
+					{/* In-Person Consultation */}
+					<div className="flex items-center gap-3 relative cursor pointer">
+						<label
+							htmlFor="inPersonConsultation"
+							className="font-medium text-[#48505E] flex items-center gap-3"
+						>
+							<RxBox className={`w-5 h-5 ${inPersonConsultation ? "hidden" : "block"}`} />
+							<BsCheckSquare
+								className={`w-5 h-5 text-secondary3 ${inPersonConsultation ? "block" : "hidden"}`}
+							/>
+							In-Person Consultation
+						</label>
+						<input
+							type="checkbox"
+							id="inPersonConsultation"
+							className="hidden"
+							checked={inPersonConsultation}
+							onChange={(e) => handleChange("inPersonConsultation", e.target.checked)}
+						/>
+					</div>
 
-          <button
-            type="button"
-            onClick={addPracticeLocation}
-            className="formAdd"
-          >
-            <FiPlus size={16} />
-            Add Location
-          </button>
-        </div>
-      </div>
+					{/* Virtual Consultation */}
+					<div className="flex items-center gap-3">
+						<label
+							htmlFor="virtualConsultation"
+							className="font-medium text-[#48505E] flex items-center gap-3"
+						>
+							<RxBox className={`w-5 h-5 ${virtualConsultation ? "hidden" : "block"}`} />
+							<BsCheckSquare
+								className={`w-5 h-5 text-secondary3 ${virtualConsultation ? "block" : "hidden"}`}
+							/>
+							Virtual Consultation
+						</label>
+						<input
+							type="checkbox"
+							id="virtualConsultation"
+							className="hidden"
+							checked={virtualConsultation}
+							onChange={(e) => handleChange("virtualConsultation", e.target.checked)}
+						/>
+					</div>
+				</div>
+			</div>
 
-      {/* Consultation Availability */}
-      <div className="pt-4">
-        <p className="text-lg font-semibold text-[#383E49]">
-          Consultation Availability
-        </p>
+			{/* Error Message */}
+			{error && <Alert type="danger" message={error} />}
 
-        <div className="grid gap-2 my-3">
-          {/* In-Person Consultation */}
-          <div className="flex items-center gap-3 relative cursor pointer">
-            <label
-              htmlFor="inPersonConsultation"
-              className="font-medium text-[#48505E] flex items-center gap-3"
-            >
-              <RxBox
-                className={`w-5 h-5 ${
-                  inPersonConsultation ? "hidden" : "block"
-                }`}
-              />
-              <BsCheckSquare
-                className={`w-5 h-5 text-secondary3 ${
-                  inPersonConsultation ? "block" : "hidden"
-                }`}
-              />
-              In-Person Consultation
-            </label>
-            <input
-              type="checkbox"
-              id="inPersonConsultation"
-              className="hidden"
-              checked={inPersonConsultation}
-              onChange={(e) =>
-                handleChange("inPersonConsultation", e.target.checked)
-              }
-            />
-          </div>
-
-          {/* Virtual Consultation */}
-          <div className="flex items-center gap-3">
-            <label
-              htmlFor="virtualConsultation"
-              className="font-medium text-[#48505E] flex items-center gap-3"
-            >
-              <RxBox
-                className={`w-5 h-5 ${
-                  virtualConsultation ? "hidden" : "block"
-                }`}
-              />
-              <BsCheckSquare
-                className={`w-5 h-5 text-secondary3 ${
-                  virtualConsultation ? "block" : "hidden"
-                }`}
-              />
-              Virtual Consultation
-            </label>
-            <input
-              type="checkbox"
-              id="virtualConsultation"
-              className="hidden"
-              checked={virtualConsultation}
-              onChange={(e) =>
-                handleChange("virtualConsultation", e.target.checked)
-              }
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Error Message */}
-      {error && <Alert type="danger" message={error} />}
-
-      {/* Submit Button */}
-      <div className="text-center my-5">
-        <Btn
-          label="Submit"
-          type="primary"
-          disabled={isLoading}
-          btnAction="submit"
-          auth
-        />
-      </div>
-    </form>
-  );
+			{/* Submit Button */}
+			<div className="text-center my-5">
+				<Btn label="Submit" type="primary" disabled={isLoading} btnAction="submit" auth />
+			</div>
+		</form>
+	);
 }

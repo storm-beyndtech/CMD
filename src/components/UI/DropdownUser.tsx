@@ -6,7 +6,7 @@ import { contextData } from "../../context/AuthContext";
 import Avatar from "./Avatar";
 
 export default function DropdownUser() {
-	const { user, logout } = contextData();
+	const { user, logout, profile } = contextData();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const trigger = useRef<any>(null);
 	const dropdown = useRef<any>(null);
@@ -42,7 +42,7 @@ export default function DropdownUser() {
 				{/* Use Avatar Component */}
 				<Avatar
 					firstName={user?.firstName || "J"}
-					profileImageUrl={user?.photo?.url || ""}
+					profileImageUrl={profile?.photo?.url || ""}
 					height="40px"
 					width="40px"
 				/>

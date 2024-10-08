@@ -109,3 +109,34 @@ export const validateProfileFields = (values: {
 
   return true;
 };
+
+
+
+export const validateGetNewCardFields = (values: {
+  location: {
+    address: string,
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+  };
+  phone: string[];
+
+}): string | true => {
+  const { location, phone } = values
+  
+  if (!location.address) return "Address is required";
+  if (location.address.length < 5) return "Address must be at least 5 characters";
+
+  if (!location.city) return "City is required";
+  if (location.city.length < 2) return "City must be at least 2 characters";
+
+  if (!location.country) return "Country is required";
+  if (!location.state) return "State is required";
+
+  if (!location.zipCode) return "Postal code is required";
+  if (location.zipCode.length < 5) return "Postal code must be at least 5 characters";
+
+  if(phone.length < 1) return "At least one phone number is required";
+  return true;
+}

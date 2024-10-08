@@ -44,6 +44,10 @@ import NewLabAppointments from "./pages/LabDashboard/NewLabAppointments";
 import PharmacyOrders from "./pages/PharmacyDashboard/PharmacyOrders";
 import PharmacyInventory from "./pages/PharmacyDashboard/PharmacyInventory";
 import PharmacyProfile from "./pages/PharmacyDashboard/PharmacyProfile";
+import CardApplication from "./pages/CardManagement/CardApplication";
+import CardApplicationSuccess from "./pages/CardManagement/CardApplicationSuccess";
+import RequestNewCard from "./pages/CardManagement/RequestNewCard";
+import DeactivateCard from "./pages/CardManagement/DeactivateCard";
 
 // Main App Component
 export default function App() {
@@ -57,6 +61,10 @@ export default function App() {
 			{/* Public routes */}
 			<Route path="/" element={<Home />} />
 			<Route path="/checkout" element={<Checkout />} />
+			<Route path="/card-application" element={<CardApplication />} />
+			<Route path="/card-application-success" element={<CardApplicationSuccess />} />
+			<Route path="/request-new-card" element={<RequestNewCard />} />
+			<Route path="/deactivate-card" element={<DeactivateCard />} />
 
 			{/* Patient auth routes */}
 			<Route path="/auth/patient/:action" element={<PatientAuth />} />
