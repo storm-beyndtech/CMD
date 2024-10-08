@@ -9,7 +9,7 @@ const ActiveOrders: React.FC = () => {
       <p className="text-gray-600">You have {consultations.length} orders in total</p>
 
       {consultations.map((consultation) => (
-        <div key={consultation.id} className="consultation-block my-5">
+        <div key={consultation._id} className="consultation-block my-5">
           {/* Patient Details */}
           <div className="flex items-center mb-2">
             <div className="patient-avatar mr-3">
