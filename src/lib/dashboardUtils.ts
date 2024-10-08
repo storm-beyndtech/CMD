@@ -40,10 +40,6 @@ import hospitalImg from "../assets/accountTypes/hospital.svg";
 import doctor from "../assets/accountTypes/doctor.svg";
 import travelNurse from "../assets/accountTypes/travelNurse.svg";
 
-//dummy Results
-//results
-import doc1 from "../assets/result-1.svg";
-import doc2 from "../assets/result-2.svg";
 
 export const navItemsPatient = [
 	{
@@ -265,7 +261,7 @@ export const labs = [
 
 export const consultations = [
 	{
-		id: "1",
+		_id: "1",
 		date: "2024-09-26",
 		type: "Follow-up",
 		status: "Completed",
@@ -273,7 +269,20 @@ export const consultations = [
 		testType: "Blood Test",
 		notes:
 			"Patient presented with symptoms of fatigue and shortness of breath. Possible anemia or vitamin deficiency. Blood tests and physical examination recommended to confirm diagnosis. The prescription below will help minimize the effect of these.",
-		documents: [doc1, doc2],
+		documents: [
+			{
+				title: "Patient heart",
+				url: "https://res.cloudinary.com/dwirhx8kk/image/upload/v1727922073/cmd_dev/mgrs8rk5uob1tpflchzp.jpg",
+				publicId: "cmd_dev/mgrs8rk5uob1tpflchzp",
+				_id: "66fdff9afdfb3aedbdf937a5",
+			},
+			{
+				title: "Patient heart",
+				url: "https://res.cloudinary.com/dwirhx8kk/image/upload/v1728248097/cmd_dev/tnzva0mnjtgwxxuc18uc.png",
+				publicId: "cmd_dev/tnzva0mnjtgwxxuc18uc",
+				_id: "6702f921fd6a665911a796f9",
+			},
+		],
 		lastVisit: "2024-08-20",
 		remarks:
 			"Good news! All your test results came back within normal ranges. No further action is required, but we recommend sharing these results with your doctor for ongoing care.",
@@ -284,7 +293,20 @@ export const consultations = [
 			weight: "70 kg",
 			allergy: "None",
 		},
-		uploads: [doc1, doc2],
+		uploads: [
+			{
+				title: "Patient heart",
+				url: "https://res.cloudinary.com/dwirhx8kk/image/upload/v1727922073/cmd_dev/mgrs8rk5uob1tpflchzp.jpg",
+				publicId: "cmd_dev/mgrs8rk5uob1tpflchzp",
+				_id: "66fdff9afdfb3aedbdf937a5",
+			},
+			{
+				title: "Patient heart",
+				url: "https://res.cloudinary.com/dwirhx8kk/image/upload/v1728248097/cmd_dev/tnzva0mnjtgwxxuc18uc.png",
+				publicId: "cmd_dev/tnzva0mnjtgwxxuc18uc",
+				_id: "6702f921fd6a665911a796f9",
+			},
+		],
 		prescriptions: [
 			{
 				dosage: "1 Tab - Once daily",
@@ -328,7 +350,7 @@ export const consultations = [
 		},
 	},
 	{
-		id: "2",
+		_id: "2",
 		date: "2024-09-26",
 		type: "Follow-up",
 		status: "In Progress",
@@ -336,7 +358,20 @@ export const consultations = [
 		testType: "Blood Test",
 		notes:
 			"Patient presented with symptoms of fatigue and shortness of breath. Possible anemia or vitamin deficiency. Blood tests and physical examination recommended to confirm diagnosis. The prescription below will help minimize the effect of these.",
-		documents: [doc1, doc2],
+		documents: [
+			{
+				title: "Patient heart",
+				url: "https://res.cloudinary.com/dwirhx8kk/image/upload/v1727922073/cmd_dev/mgrs8rk5uob1tpflchzp.jpg",
+				publicId: "cmd_dev/mgrs8rk5uob1tpflchzp",
+				_id: "66fdff9afdfb3aedbdf937a5",
+			},
+			{
+				title: "Patient heart",
+				url: "https://res.cloudinary.com/dwirhx8kk/image/upload/v1728248097/cmd_dev/tnzva0mnjtgwxxuc18uc.png",
+				publicId: "cmd_dev/tnzva0mnjtgwxxuc18uc",
+				_id: "6702f921fd6a665911a796f9",
+			},
+		],
 		lastVisit: "2024-08-20",
 		remarks:
 			"Good news! All your test results came back within normal ranges. No further action is required, but we recommend sharing these results with your doctor for ongoing care.",
@@ -347,7 +382,20 @@ export const consultations = [
 			weight: "70 kg",
 			allergy: "None",
 		},
-		uploads: [doc1, doc2],
+		uploads: [
+			{
+				title: "Patient heart",
+				url: "https://res.cloudinary.com/dwirhx8kk/image/upload/v1727922073/cmd_dev/mgrs8rk5uob1tpflchzp.jpg",
+				publicId: "cmd_dev/mgrs8rk5uob1tpflchzp",
+				_id: "66fdff9afdfb3aedbdf937a5",
+			},
+			{
+				title: "Patient heart",
+				url: "https://res.cloudinary.com/dwirhx8kk/image/upload/v1728248097/cmd_dev/tnzva0mnjtgwxxuc18uc.png",
+				publicId: "cmd_dev/tnzva0mnjtgwxxuc18uc",
+				_id: "6702f921fd6a665911a796f9",
+			},
+		],
 		prescriptions: [
 			{
 				dosage: "1 Tab - Once daily",
@@ -391,7 +439,7 @@ export const consultations = [
 		},
 	},
 	{
-		id: "3",
+		_id: "3",
 		date: "2024-09-26",
 		type: "Follow-up",
 		status: "Completed",
@@ -399,7 +447,20 @@ export const consultations = [
 		testType: "Blood Test",
 		notes:
 			"Patient presented with symptoms of fatigue and shortness of breath. Possible anemia or vitamin deficiency. Blood tests and physical examination recommended to confirm diagnosis. The prescription below will help minimize the effect of these.",
-		documents: [doc1, doc2],
+		documents: [
+			{
+				title: "Patient heart",
+				url: "https://res.cloudinary.com/dwirhx8kk/image/upload/v1727922073/cmd_dev/mgrs8rk5uob1tpflchzp.jpg",
+				publicId: "cmd_dev/mgrs8rk5uob1tpflchzp",
+				_id: "66fdff9afdfb3aedbdf937a5",
+			},
+			{
+				title: "Patient heart",
+				url: "https://res.cloudinary.com/dwirhx8kk/image/upload/v1728248097/cmd_dev/tnzva0mnjtgwxxuc18uc.png",
+				publicId: "cmd_dev/tnzva0mnjtgwxxuc18uc",
+				_id: "6702f921fd6a665911a796f9",
+			},
+		],
 		lastVisit: "2024-08-20",
 		remarks:
 			"Good news! All your test results came back within normal ranges. No further action is required, but we recommend sharing these results with your doctor for ongoing care.",
@@ -410,7 +471,20 @@ export const consultations = [
 			weight: "70 kg",
 			allergy: "None",
 		},
-		uploads: [doc1, doc2],
+		uploads: [
+			{
+				title: "Patient heart",
+				url: "https://res.cloudinary.com/dwirhx8kk/image/upload/v1727922073/cmd_dev/mgrs8rk5uob1tpflchzp.jpg",
+				publicId: "cmd_dev/mgrs8rk5uob1tpflchzp",
+				_id: "66fdff9afdfb3aedbdf937a5",
+			},
+			{
+				title: "Patient heart",
+				url: "https://res.cloudinary.com/dwirhx8kk/image/upload/v1728248097/cmd_dev/tnzva0mnjtgwxxuc18uc.png",
+				publicId: "cmd_dev/tnzva0mnjtgwxxuc18uc",
+				_id: "6702f921fd6a665911a796f9",
+			},
+		],
 		prescriptions: [
 			{
 				dosage: "1 Tab - Once daily",

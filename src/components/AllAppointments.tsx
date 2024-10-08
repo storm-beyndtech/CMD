@@ -15,7 +15,7 @@ export default function AllAppointments({consultations} : {consultations: Consul
 			searchTerm === "" ||
 			consultation.patientDetails.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			consultation.testType.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			consultation.date.includes(searchTerm);
+			consultation.dateTime.includes(searchTerm);
 
 		return matchesStatus && matchesSearchTerm;
 	});
@@ -87,7 +87,7 @@ export default function AllAppointments({consultations} : {consultations: Consul
 									{consultation.status}
 								</span>
 							</td>
-							<td className="py-3 sm:py-5 text-[#48505E]">{consultation.date}</td>
+							<td className="py-3 sm:py-5 text-[#48505E]">{consultation.dateTime}</td>
 						</tr>
 					))}
 				</tbody>

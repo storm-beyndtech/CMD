@@ -26,7 +26,7 @@ export default function AppointmentDetails() {
 	useEffect(() => {
 		// Simulate fetching data by matching the id
 		const fetchConsultation = () => {
-			const data = consultations.find((c) => c.id === id);
+			const data = consultations.find((c) => c._id === id);
 			setConsultation(data);
 		};
 		fetchConsultation();
